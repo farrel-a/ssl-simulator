@@ -37,5 +37,10 @@
       <name>ssl_goal_2</name>
       <pose>6 0 0 0 0 0</pose>
     </include>
+    <include>
+      <uri>model://ssl_ball</uri>
+      <name>ssl_ball_1</name>
+      <pose>0 0 0 0 0 0</pose>
+    </include>
   </world>
 </sdf>
