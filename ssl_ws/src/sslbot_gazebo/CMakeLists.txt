@@ -10,7 +10,10 @@ project(sslbot_gazebo)
 find_package(catkin REQUIRED COMPONENTS
   roscpp
   rospy
+  gazebo_ros
 )
+
+find_package(gazebo REQUIRED)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -105,7 +108,7 @@ catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES sslbot_gazebo
 #  CATKIN_DEPENDS roscpp rospy
-#  DEPENDS system_lib
+  DEPENDS system_lib roscpp rospy gazebo_ros
 )
 
 ###########
@@ -116,7 +119,7 @@ catkin_package(
 ## Your package locations should be listed before other locations
 include_directories(
 # include
-  ${catkin_INCLUDE_DIRS}
+  ${catkin_INCLUDE_DIRS} ${GAZEBO_INCLUDE_DIRS}
 )
 
 ## Declare a C++ library
@@ -132,7 +135,7 @@ include_directories(
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-# add_executable(${PROJECT_NAME}_node src/sslbot_gazebo_node.cpp)
+ add_executable(ball_state_pub src/ball_state_pub.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -142,12 +145,12 @@ include_directories(
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
-# add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+ add_dependencies(ball_state_pub ${ball_state_pub_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
-# target_link_libraries(${PROJECT_NAME}_node
-#   ${catkin_LIBRARIES}
-# )
+ target_link_libraries(
+   ball_state_pub ${catkin_LIBRARIES} ${GAZEBO_LIBRARIES}
+ )
 
 #############
 ## Install ##
