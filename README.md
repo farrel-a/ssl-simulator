@@ -1,6 +1,6 @@
 # SSL Simulator Using Gazebo-ROS
 ## Temporary README FILE 
-### (4 July 2021 Update-2)
+### (4 July 2021 Update-3)
 
 <p>&nbsp;</p>
 
@@ -35,13 +35,13 @@ $ source devel/setup.bash
 
 5. Launch the world
 ```
-$ roslaunch sslbot_gazebo sslbot_world
+$ roslaunch sslbot_gazebo sslbot.launch
 ```
 
 6. The result will look like this
 
 ![](https://i.ibb.co/9NCp2HV/Screenshot-from-2021-07-04-15-38-05.png)
 
-7. Now the SSL ball is spawned at the center of the field
+7. Now the SSL ball is spawned at the center of the field (4 July 2021 Update-3)
 
 ![](https://i.ibb.co/jgPX5H7/Screenshot-from-2021-07-04-21-18-57.png)
