@@ -4,6 +4,7 @@ import rospy
 from nav_msgs.msg import Odometry
 from tf.transformations import euler_from_quaternion
 from geometry_msgs.msg import Point, Twist
+from gazebo_msgs.msg import ModelStates
 from math import atan2
 import time
 
@@ -25,16 +26,21 @@ def newOdom(msg):
 
 rospy.init_node("moveto")
 
+goal = Point() #global goal variable
+
+def ballPos(msg):
+    global goal
+    goal.x = msg.pose[0].position.x # x values of ball
+    goal.y = msg.pose[0].position.y # y values of ball
+
+
 sub = rospy.Subscriber("/robot_1/odom", Odometry, newOdom)
+sub2 = rospy.Subscriber("/ball_state", ModelStates, ballPos)
 pub = rospy.Publisher("/robot_1/cmd_vel", Twist, queue_size = 1)
 
 speed = Twist()
 
 r = rospy.Rate(1000)
-
-goal = Point()
-goal.x = 0
-goal.y = 0
 
 while not rospy.is_shutdown():
     inc_x = goal.x -x
@@ -42,15 +48,15 @@ while not rospy.is_shutdown():
 
     angle_to_goal = atan2(inc_y, inc_x)
 
-    if (angle_to_goal - theta) > 0.2:
+    if (angle_to_goal - theta) > 0.3:
         speed.linear.x = 0.0
-        speed.angular.z = 0.3
-    elif (angle_to_goal - theta) < -0.2:
+        speed.angular.z = 0.8
+    elif (angle_to_goal - theta) < -0.3:
         speed.linear.x = 0.0
-        speed.angular.z = -0.3
+        speed.angular.z = -0.8
     else:
         speed.angular.z = 0.0 
-        speed.linear.x = 0.8
+        speed.linear.x = 0.5
 
     pub.publish(speed)
     r.sleep()
