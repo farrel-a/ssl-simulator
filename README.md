@@ -98,4 +98,6 @@ then, the turtlebot will head to its destination. Note that the program need to 
 
 further improvement in tuning/calibration of the robot itself and let the moveto node to subscribe to a topic for its destination argument
 
-this method is good for future update and improvement because the robot itself act as a node and receiving message from command topic like '/cmd_vel' and '/odom' which is useful for navigation
+this method is good for future update and improvement because the robot itself act as a node and receiving message from command topic like '/cmd_vel' and '/odom' which is useful for navigation (commonly used).  
+
+![](https://i.ibb.co/hV4FDjJ/Screenshot-from-2021-07-09-21-15-36.png)
