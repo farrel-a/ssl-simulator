@@ -15,17 +15,17 @@
     <include>
       <uri>model://turtlebot</uri>
       <name>turtlebot_1</name>
-      <pose>2 -2 0 0 0 0</pose>
+      <pose>2 -2 0 0 0 3.14</pose>
     </include>
     <include>
       <uri>model://turtlebot</uri>
       <name>turtlebot_2</name>
-      <pose>2 0 0 0 0 0</pose>
+      <pose>2 0 0 0 0 3.14</pose>
     </include>
     <include>
       <uri>model://turtlebot</uri>
       <name>turtlebot_3</name>
-      <pose>2 2 0 0 0 0</pose>
+      <pose>2 2 0 0 0 3.14</pose>
     </include>
     <include>
       <uri>model://ssl_goal</uri>
