@@ -31,7 +31,7 @@
         <material>
           <script>
             <uri>file://media/materials/scripts/gazebo.material</uri>
-            <name>Gazebo/RedBright</name>
+            <name>Gazebo/Orange</name>
           </script>
         </material>
       </visual>
