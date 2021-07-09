@@ -8,8 +8,13 @@ project(sslbot_gazebo)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
-  roscpp
   rospy
+  roscpp
+  std_msgs
+  sensor_msgs
+  geometry_msgs
+  nav_msgs
+  tf
   gazebo_ros
 )
 
@@ -108,7 +113,7 @@ catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES sslbot_gazebo
 #  CATKIN_DEPENDS roscpp rospy
-  DEPENDS system_lib roscpp rospy gazebo_ros
+  DEPENDS system_lib roscpp rospy std_msgs sensor_msgs geometry_msgs nav_msgs tf gazebo_ros
 )
 
 ###########
@@ -166,10 +171,10 @@ include_directories(
 
 ## Mark executable scripts (Python etc.) for installation
 ## in contrast to setup.py, you can choose the destination
-# catkin_install_python(PROGRAMS
-#   scripts/my_python_script
-#   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-# )
+catkin_install_python(PROGRAMS
+  scripts/moveto.py
+  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
 
 ## Mark executables for installation
 ## See http://docs.ros.org/melodic/api/catkin/html/howto/format1/building_executables.html
