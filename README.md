@@ -58,10 +58,14 @@ rostopic list
 
 ball_state topic in rostopic echo  
 
-9. **(10 July 2021 Update)** : Now the playing field has a barrier so the robot and the ball can't go outside of the playing field. Delete the visual tag of barrier link in ssl_field model to get invisible barrier instead of a colored one.  
+9. **(10 July 2021 Update-1)** : Now the playing field has a barrier so the robot and the ball can't go outside of the playing field. Delete the visual tag of barrier link in ssl_field model to get invisible barrier instead of a colored one.  
 
 ![](https://i.ibb.co/pwq540G/Screenshot-from-2021-07-10-00-24-43.png)
 
+
+10. **(10 July 2021 Update-2) : changed the ball's color to orange to meet the standard of SSL Ball
+
+![](https://i.ibb.co/HpddYNW/Screenshot-from-2021-07-10-06-51-53.png)
 
 <p>&nbsp;</p>
 
