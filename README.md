@@ -63,7 +63,7 @@ ball_state topic in rostopic echo
 ![](https://i.ibb.co/pwq540G/Screenshot-from-2021-07-10-00-24-43.png)
 
 
-10. **(10 July 2021 Update-2) : changed the ball's color to orange to meet the standard of SSL Ball
+10. **(10 July 2021 Update-2)** : changed the ball's color to orange to meet the standard of SSL Ball
 
 ![](https://i.ibb.co/HpddYNW/Screenshot-from-2021-07-10-06-51-53.png)
 
