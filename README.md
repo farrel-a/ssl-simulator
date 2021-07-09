@@ -56,7 +56,11 @@ rostopic list
 
 ![](https://i.ibb.co/BrQ9yVh/Screenshot-from-2021-07-05-23-22-20.png)
 
-ball_state topic in rostopic echo
+ball_state topic in rostopic echo  
+
+9. **(10 July 2021 Update)** : Now the playing field has a barrier so the robot and the ball can't go outside of the playing field. Delete the visual tag of barrier link in ssl_field model to get invisible barrier instead of a colored one.  
+
+![](https://i.ibb.co/pwq540G/Screenshot-from-2021-07-10-00-24-43.png)
 
 
 <p>&nbsp;</p>
