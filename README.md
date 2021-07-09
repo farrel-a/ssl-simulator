@@ -42,11 +42,11 @@ $ roslaunch sslbot_gazebo sslbot.launch
 
 ![](https://i.ibb.co/9NCp2HV/Screenshot-from-2021-07-04-15-38-05.png)
 
-7. (4 July 2021 Update-3) : Now the SSL ball is spawned at the center of the field 
+7. **(4 July 2021 Update-3)** : Now the SSL ball is spawned at the center of the field 
 
 ![](https://i.ibb.co/jgPX5H7/Screenshot-from-2021-07-04-21-18-57.png)
 
-8. (5 July 2021 Update) : Now by using the newly created node called `ball_state_pub` which subscribes to a topic `/gazebo/model_states`, the ball's state (position and twist) is published to a topic `ball_state` 
+8. **(5 July 2021 Update)** : Now by using the newly created node called `ball_state_pub` which subscribes to a topic `/gazebo/model_states`, the ball's state (position and twist) is published to a topic `ball_state` 
 
 ![](https://i.ibb.co/5r1SWfG/Screenshot-from-2021-07-05-23-23-51.png)
 
@@ -58,7 +58,12 @@ rostopic list
 
 ball_state topic in rostopic echo
 
-9. (9 July 2021 Update, EXPERIMENTAL) : turtlebot_1 will move to the ball's location . Just run this command after the program starts
+
+<p>&nbsp;</p>
+
+## Robot Basic Movement
+
+1. **(9 July 2021 Update-1, EXPERIMENTAL)** : turtlebot_1 will move to the ball's location . Just run this command after the program starts
 ```
 rosrun sslbot_gazebo turtlebot_1_pub
 ```
@@ -71,7 +76,9 @@ First, turtlebot_1 will rotate to the ball's direction
 
 Second, turtlebot_1 will move forward to the ball
 
-10. (9 July 2021 Update) : now using turtlebot3 urdf model to control it using ros control. First, get the turtlebot3 package (we're going to put the urdf in our workspace later on) by using this command
+<p>&nbsp;</p>
+
+2. **(9 July 2021 Update-2)** : now using turtlebot3 urdf model to control it using ros control. First, get the turtlebot3 package (we're going to put the urdf in our workspace later on) by using this command
 ```
 $ sudo apt-get install ros-noetic-dynamixel-sdk
 $ sudo apt-get install ros-noetic-turtlebot3-msgs
@@ -101,3 +108,9 @@ further improvement in tuning/calibration of the robot itself and let the moveto
 this method is good for future update and improvement because the robot itself act as a node and receiving message from command topic like '/cmd_vel' and '/odom' which is useful for navigation (commonly used).  
 
 ![](https://i.ibb.co/hV4FDjJ/Screenshot-from-2021-07-09-21-15-36.png)
+
+<p>&nbsp;</p>
+
+3. **(9 July 2021 Update-3)** : Now the turtlebot3 number 1 will follow the ball wherever it is. Even if we change the ball's position manually
+
+![](https://i.ibb.co/0n9djW2/Screenshot-from-2021-07-09-22-37-51.png)
