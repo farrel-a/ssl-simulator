@@ -70,3 +70,32 @@ First, turtlebot_1 will rotate to the ball's direction
 ![](https://i.ibb.co/744P08V/Screenshot-from-2021-07-09-18-15-42.png)
 
 Second, turtlebot_1 will move forward to the ball
+
+10. (9 July 2021 Update) : now using turtlebot3 urdf model to control it using ros control. First, get the turtlebot3 package (we're going to put the urdf in our workspace later on) by using this command
+```
+$ sudo apt-get install ros-noetic-dynamixel-sdk
+$ sudo apt-get install ros-noetic-turtlebot3-msgs
+$ sudo apt-get install ros-noetic-turtlebot3
+```
+
+roslaunch the usual launch file
+```
+$ roslaunch sslbot_gazebo sslbot.launch
+```
+
+run this program in another terminal (don't forget to source your setup.bash)
+```
+$ rosrun sslbot_gazebo moveto.py
+```
+
+![](https://i.ibb.co/0MkdMr7/robot-mutar.png)
+at first, the turtlebot will correct its orientation to face the destination
+
+<p>&nbsp;</p>
+
+![](https://i.ibb.co/s9DxJYv/robot-jalan.png)
+then, the turtlebot will head to its destination. Note that the program need to have angle tolerance in order for the program to work smoothly (the robot have inertia and acceleration).  
+
+further improvement in tuning/calibration of the robot itself and let the moveto node to subscribe to a topic for its destination argument
+
+this method is good for future update and improvement because the robot itself act as a node and receiving message from command topic like '/cmd_vel' and '/odom' which is useful for navigation
