@@ -20,10 +20,11 @@ To launch world and spawn SSL Field and Robots, run this command :
 $ git clone https://gitlab.com/dagozilla/academy/2021-internship2/group-1/ssl-simulator.git
 ```
 
-2. change branch to testing, then cd to `/ssl_ws`
+2. cd to `/ssl-simulator`, change branch to `testing`, then cd to `/ssl_ws`
 ```
+$ cd ssl-simulator
 $ git checkout testing
-$ cd ssl-simulator/ssl_ws
+$ cd ssl_ws
 ```
 
 3. run `catkin_make`
