@@ -12,14 +12,17 @@
 <p>&nbsp;</p>
 
 ## Launching World
+**Update 12 July 2021 New Branch "testing"**
+
 To launch world and spawn SSL Field and Robots, run this command :
 1. Clone the repository
 ```
 $ git clone https://gitlab.com/dagozilla/academy/2021-internship2/group-1/ssl-simulator.git
 ```
 
-2. cd to `/ssl_ws`
+2. change branch to testing, then cd to `/ssl_ws`
 ```
+$ git checkout testing
 $ cd ssl-simulator/ssl_ws
 ```
 
