@@ -7,6 +7,9 @@ from geometry_msgs.msg import Point, Twist
 from gazebo_msgs.msg import ModelStates
 from math import atan2
 import time
+from gazebo_msgs.srv import *
+from std_srvs.srv import *
+import math
 
 # initialize as float
 x = 0.0
@@ -24,39 +27,115 @@ def newOdom(msg):
     rot_q = msg.pose.pose.orientation
     (roll, pitch, theta) = euler_from_quaternion([rot_q.x, rot_q.y, rot_q.z, rot_q.w])
 
+def isInEnemyPenalty(a,b):
+    if ((-7.0<=a<=-4.0) and (-0.5<=b<=0.5)):
+        return True
+    else:
+        False
+
 rospy.init_node("moveto")
+rospy.wait_for_service('/gazebo/set_model_state')
+rospy.wait_for_service('/gazebo/reset_world')
+set_ball_service = rospy.ServiceProxy('/gazebo/set_model_state', SetModelState)
+set_reset = rospy.ServiceProxy('gazebo/reset_world', Empty)
+# set_ball_service2 = rospy.ServiceProxy('/gazebo/set_model_state', SetModelState) 
 
+ballstate = SetModelStateRequest() #initialize ballstate
+resetball = SetModelStateRequest()
 goal = Point() #global goal variable
-
+visited = False
+ball_x = 0.0
+ball_y = 0.0
+bool_reset = False
+reset_req = EmptyRequest()
 def ballPos(msg):
     global goal
-    goal.x = msg.pose[0].position.x # x values of ball
-    goal.y = msg.pose[0].position.y # y values of ball
+    global ballstate
+    global resetball
+    global visited
+    global ball_x
+    global ball_y
+    global bool_reset
+    distance = ((goal.x-x)**2 + (goal.y-y)**2)**0.5
+    if (distance < 0.15): #distance between ball and bot needed to dribble the ball
+        if ((-2.1<=x<=-1.9) and (-2.1<=y<=-1.9)):
+            visited = True
+
+        if not(visited):
+            goal.x = -2.0
+            goal.y = -2.0
+        else:
+            goal.x = -4.5
+            goal.y = 0.0
+
+        if (not(isInEnemyPenalty(x,y))):
+            ballstate.model_state.model_name = "ssl_ball_1"
+            ballstate.model_state.pose.position.x = x + (0.09*math.sin((math.pi-(theta))-(math.pi/2)))
+            ballstate.model_state.pose.position.y = y + (0.09*math.cos((math.pi-(theta))-(math.pi/2)))
+            ballstate.model_state.pose.position.z = 0.05
+            set_ball_service(ballstate) #call set_model_state to be in front of bot
+        elif (isInEnemyPenalty(x,y) and bool_reset==False):
+            if (speed.linear.x==0 and speed.angular.z==0 and (3.08<=abs(theta)<=3.14)):
+                ball_x = x + (0.09*math.sin((math.pi-(theta))-(math.pi/2)))
+                ball_y = y + (0.09*math.cos((math.pi-(theta))-(math.pi/2)))
+                ballstate.model_state.model_name = "ssl_ball_1"
+                ballstate.model_state.pose.position.x = ball_x
+                ballstate.model_state.pose.position.y = ball_y
+                ballstate.model_state.pose.position.z = 0.05
+                ballstate.model_state.twist.linear.x = -2.0
+                set_ball_service(ballstate)
+                time.sleep(3)
+                bool_reset = True
+                visited = False
+            else:
+                ballstate.model_state.model_name = "ssl_ball_1"
+                ballstate.model_state.pose.position.x = x + (0.09*math.sin((math.pi-(theta))-(math.pi/2)))
+                ballstate.model_state.pose.position.y = y + (0.09*math.cos((math.pi-(theta))-(math.pi/2)))
+                ballstate.model_state.pose.position.z = 0.05
+                set_ball_service(ballstate) #call set_model_state to be in front of bot
+                ball_x = x + (0.09*math.sin((math.pi-(theta))-(math.pi/2)))
+                ball_y = y + (0.09*math.cos((math.pi-(theta))-(math.pi/2)))
+
+        if (bool_reset==True):
+            bool_reset = False
+            set_reset(reset_req)
+
+    else:
+        goal.x = msg.pose[0].position.x # x values of ball
+        goal.y = msg.pose[0].position.y # y values of ball
 
 
 sub = rospy.Subscriber("/robot_1/odom", Odometry, newOdom)
 sub2 = rospy.Subscriber("/ball_state", ModelStates, ballPos)
-pub = rospy.Publisher("/robot_1/cmd_vel", Twist, queue_size = 1)
+pub = rospy.Publisher("/robot_1/cmd_vel", Twist, queue_size = 10)
 
 speed = Twist()
 
 r = rospy.Rate(1000)
-
 while not rospy.is_shutdown():
     inc_x = goal.x -x
     inc_y = goal.y -y
-
     angle_to_goal = atan2(inc_y, inc_x)
-
-    if (angle_to_goal - theta) > 0.3:
-        speed.linear.x = 0.0
-        speed.angular.z = 0.8
-    elif (angle_to_goal - theta) < -0.3:
-        speed.linear.x = 0.0
-        speed.angular.z = -0.8
+    if not(isInEnemyPenalty(x,y)):
+        if (angle_to_goal - theta) > 0.2:
+            speed.linear.x = 0.0
+            speed.angular.z = 0.4
+        elif (angle_to_goal - theta) < -0.2:
+            speed.linear.x = 0.0
+            speed.angular.z = -0.4
+        else:
+            speed.angular.z = 0.0 
+            speed.linear.x = 0.6
     else:
-        speed.angular.z = 0.0 
-        speed.linear.x = 0.5
+        if ((3.08<=abs(theta)<=3.14) and speed.angular.z != 0):
+            speed.angular.z = 0.0
+            speed.linear.x = 0.0
+        elif ((3.08<=abs(theta)<=3.14) and speed.angular.z == 0):
+            speed.angular.z = 0.0
+            speed.linear.x = 0.0
+        else :
+            speed.angular.z = 0.2
+            speed.linear.x = 0.0
 
     pub.publish(speed)
     r.sleep()
