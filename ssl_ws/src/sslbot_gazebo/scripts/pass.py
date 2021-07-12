@@ -56,7 +56,7 @@ def newOdom2(msg):
     rot_q = msg.pose.pose.orientation
     (roll, pitch, theta2) = euler_from_quaternion([rot_q.x, rot_q.y, rot_q.z, rot_q.w])
 
-rospy.init_node("moveto")
+rospy.init_node("pass")
 rospy.wait_for_service('/gazebo/set_model_state')
 set_ball_service = rospy.ServiceProxy('/gazebo/set_model_state', SetModelState)
 
