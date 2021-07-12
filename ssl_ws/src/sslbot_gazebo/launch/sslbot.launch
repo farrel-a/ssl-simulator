@@ -123,4 +123,6 @@
 
   <node name="robot_3.py" pkg="sslbot_gazebo" type="robot_3.py" respawn="true" />
 
+  <node name="robot_4.py" pkg="sslbot_gazebo" type="robot_4.py" respawn="true" />
+
 </launch>
