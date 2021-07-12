@@ -64,5 +64,7 @@
   </group>
 
   <node name="ball_state_pub" pkg="sslbot_gazebo" type="ball_state_pub" respawn="true" />
+  
+  <node name="goalout_node" pkg="sslbot_gazebo" type="goalout_node" respawn="true" />
 
 </launch>
