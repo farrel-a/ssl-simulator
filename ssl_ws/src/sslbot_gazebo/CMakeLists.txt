@@ -179,6 +179,7 @@ include_directories(
 catkin_install_python(PROGRAMS
   scripts/robot_1.py
   scripts/robot_3.py
+  scripts/robot_4.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
