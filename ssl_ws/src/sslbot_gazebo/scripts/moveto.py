@@ -35,27 +35,19 @@ def isInEnemyPenalty(a,b):
 
 rospy.init_node("moveto")
 rospy.wait_for_service('/gazebo/set_model_state')
-rospy.wait_for_service('/gazebo/reset_world')
 set_ball_service = rospy.ServiceProxy('/gazebo/set_model_state', SetModelState)
-set_reset = rospy.ServiceProxy('gazebo/reset_world', Empty)
-# set_ball_service2 = rospy.ServiceProxy('/gazebo/set_model_state', SetModelState) 
 
 ballstate = SetModelStateRequest() #initialize ballstate
-resetball = SetModelStateRequest()
 goal = Point() #global goal variable
 visited = False
 ball_x = 0.0
 ball_y = 0.0
-bool_reset = False
-reset_req = EmptyRequest()
 def ballPos(msg):
     global goal
     global ballstate
-    global resetball
     global visited
     global ball_x
     global ball_y
-    global bool_reset
     distance = ((goal.x-x)**2 + (goal.y-y)**2)**0.5
     if (distance < 0.15): #distance between ball and bot needed to dribble the ball
         if ((-2.1<=x<=-1.9) and (-2.1<=y<=-1.9)):
@@ -74,7 +66,7 @@ def ballPos(msg):
             ballstate.model_state.pose.position.y = y + (0.09*math.cos((math.pi-(theta))-(math.pi/2)))
             ballstate.model_state.pose.position.z = 0.05
             set_ball_service(ballstate) #call set_model_state to be in front of bot
-        elif (isInEnemyPenalty(x,y) and bool_reset==False):
+        elif (isInEnemyPenalty(x,y)): 
             if (speed.linear.x==0 and speed.angular.z==0 and (3.08<=abs(theta)<=3.14)):
                 ball_x = x + (0.09*math.sin((math.pi-(theta))-(math.pi/2)))
                 ball_y = y + (0.09*math.cos((math.pi-(theta))-(math.pi/2)))
@@ -85,7 +77,6 @@ def ballPos(msg):
                 ballstate.model_state.twist.linear.x = -2.0
                 set_ball_service(ballstate)
                 time.sleep(3)
-                bool_reset = True
                 visited = False
             else:
                 ballstate.model_state.model_name = "ssl_ball_1"
@@ -95,10 +86,6 @@ def ballPos(msg):
                 set_ball_service(ballstate) #call set_model_state to be in front of bot
                 ball_x = x + (0.09*math.sin((math.pi-(theta))-(math.pi/2)))
                 ball_y = y + (0.09*math.cos((math.pi-(theta))-(math.pi/2)))
-
-        if (bool_reset==True):
-            bool_reset = False
-            set_reset(reset_req)
 
     else:
         goal.x = msg.pose[0].position.x # x values of ball
