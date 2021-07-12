@@ -13,18 +13,26 @@ import math
 
 # initialize as float
 x = 0.0
-y = 0.0 
+y = 0.0
 theta = 0.0
+ori = []
 
 def newOdom(msg):
     global x
     global y
     global theta
+    global ori
 
     x = msg.pose.pose.position.x
     y = msg.pose.pose.position.y
 
+    ori = []
+
     rot_q = msg.pose.pose.orientation
+    ori.append(rot_q.x)
+    ori.append(rot_q.y)
+    ori.append(rot_q.z)
+    ori.append(rot_q.w)
     (roll, pitch, theta) = euler_from_quaternion([rot_q.x, rot_q.y, rot_q.z, rot_q.w])
 
 def isInEnemyPenalty(a,b):
@@ -65,16 +73,21 @@ def ballPos(msg):
             ballstate.model_state.pose.position.x = x + (0.09*math.sin((math.pi-(theta))-(math.pi/2)))
             ballstate.model_state.pose.position.y = y + (0.09*math.cos((math.pi-(theta))-(math.pi/2)))
             ballstate.model_state.pose.position.z = 0.05
+            ballstate.model_state.pose.orientation.x = ori[0]
+            ballstate.model_state.pose.orientation.y = ori[1]
+            ballstate.model_state.pose.orientation.z = ori[2]
+            ballstate.model_state.pose.orientation.w = ori[3]
             set_ball_service(ballstate) #call set_model_state to be in front of bot
         elif (isInEnemyPenalty(x,y)): 
             if (speed.linear.x==0 and speed.angular.z==0 and (3.08<=abs(theta)<=3.14)):
                 ball_x = x + (0.09*math.sin((math.pi-(theta))-(math.pi/2)))
                 ball_y = y + (0.09*math.cos((math.pi-(theta))-(math.pi/2)))
                 ballstate.model_state.model_name = "ssl_ball_1"
-                ballstate.model_state.pose.position.x = ball_x
-                ballstate.model_state.pose.position.y = ball_y
+                ballstate.model_state.reference_frame = "ssl_ball_1"
+                ballstate.model_state.pose.position.x = 0
+                ballstate.model_state.pose.position.y = 0
                 ballstate.model_state.pose.position.z = 0.05
-                ballstate.model_state.twist.linear.x = -2.0
+                ballstate.model_state.twist.linear.x = 2.0
                 set_ball_service(ballstate)
                 time.sleep(3)
                 visited = False
@@ -83,6 +96,10 @@ def ballPos(msg):
                 ballstate.model_state.pose.position.x = x + (0.09*math.sin((math.pi-(theta))-(math.pi/2)))
                 ballstate.model_state.pose.position.y = y + (0.09*math.cos((math.pi-(theta))-(math.pi/2)))
                 ballstate.model_state.pose.position.z = 0.05
+                ballstate.model_state.pose.orientation.x = ori[0]
+                ballstate.model_state.pose.orientation.y = ori[1]
+                ballstate.model_state.pose.orientation.z = ori[2]
+                ballstate.model_state.pose.orientation.w = ori[3]
                 set_ball_service(ballstate) #call set_model_state to be in front of bot
                 ball_x = x + (0.09*math.sin((math.pi-(theta))-(math.pi/2)))
                 ball_y = y + (0.09*math.cos((math.pi-(theta))-(math.pi/2)))
