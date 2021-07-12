@@ -14,6 +14,12 @@
 ## Launching World
 **Update 12 July 2021 New Branch "testing"**
 
+**12 July 2021 Update-1**
+
+Terminal Run List:
+1. `$ roslaunch sslbot_gazebo sslbot.launch`
+2. `$ rosrun sslbot_gazebo moveto.py`
+
 To launch world and spawn SSL Field and Robots, run this command :
 1. Clone the repository
 ```
@@ -126,3 +132,34 @@ this method is good for future update and improvement because the robot itself a
 3. **(9 July 2021 Update-3)** : Now the turtlebot3 number 1 will follow the ball wherever it is. Even if we change the ball's position manually
 
 ![](https://i.ibb.co/0n9djW2/Screenshot-from-2021-07-09-22-37-51.png)
+
+<p>&nbsp;</p>
+
+## Catch and Dribble
+**12 July 2021 Update-1**
+
+The dribble and shoot use `/gazebo/set_model_state` service that is called using `moveto` node. 
+
+At first, the robot will follow the ball. Then, once the distance between the ball and the robot is < 0.15m, the ball will stay in front of the robot and will continue dribble. The ball stays in front of the robot (0.11 m apart) using `/gazebo/set_model_state` service by calling it a lot of times until certain circumstances. 
+
+At the enemy goal, the robot will correct its' orientation, then the ball will be shot using `gazebo/set_model_state` by setting linear velocity to the ball. However the service is only called once.
+
+**Watch this turtlebot3 catching and dribbling the ball**
+
+![](photos/dribble_1.gif)
+
+<p>&nbsp;</p>
+
+
+## Shoot and Goal or Out Detection 
+**12 July 2021 Update-1**
+
+Now the turtlebot can dribble the ball, go to (-2,-2), go to the enemy penalty area, and then kick the ball. Once the ball has been inside the goal. The simulator automatically pause and reset the world. Just play start on bottom left of the screen to start another simulation.
+
+The bug that made turtlebot3 kick the ball twice to the goal in previous `moveto.py` commit has been fixed. The problem was on the goal out detection system in `moveto` node. Now the system has been moved to another specific node called `goalout_node` (cpp). However, in the current update, the goalout detection system only covers the enemy side of goal and out. Another area will be covered later.
+
+The `goalout_node` automatically runs at launch. If the node crashes, it will automatically re-run.
+
+**Watch this goal !**
+
+![](photos/goal.gif)
