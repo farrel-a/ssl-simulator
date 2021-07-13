@@ -12,9 +12,9 @@
 <p>&nbsp;</p>
 
 ## Launching World
-**Update 12 July 2021 New Branch "testing"**
+~~**Update 12 July 2021 New Branch "testing"**~~
 
-**12 July 2021 Update-1**
+**12 July 2021 Update-1 "master" Branch**
 
 Terminal Run List:
 1. `$ roslaunch sslbot_gazebo sslbot.launch`
@@ -163,3 +163,34 @@ The `goalout_node` automatically runs at launch. If the node crashes, it will au
 **Watch this goal !**
 
 ![](photos/goal.gif)
+
+<p>&nbsp;</p>
+
+## Dribbling, Passing, and Shooting
+
+**14 July 2021 Update-1**
+
+Now the robots can dribble, pass, and shoot. Check out the new update in `master` branch. Setup is just the same as before. `catkin_make`, then source `setup.bash` and then run this command:
+```
+$ roslaunch sslbot_gazebo sslbot.launch
+```
+
+Nodes will run automatically at launch. Each robot is controlled by a node called (`robot_x.py`) with x is the number of the robot. For example, the robot that will pass the ball is robot no.1, thus it will be controlled by a node called `robot_1.py`.The other robot which will receive the ball is robot no.3, thus it will be controlled by a node called `robot_3.py`. Each robot has its' own node. 
+
+The algorithm for dribbling was developed by Farrel. It's basically calling service set_model_state to the ball and set it in front of the robot many times. The robot will dribble when the it reaches a distance of < 0.15 m to the ball.
+
+The algorithm for shooting was developed by Farrel and optimized by Nanda. Originally, the shooting algorithm used world reference to set the initial velocity of the ball. Later, Nanda optimized the algorithm by changing the reference to the robot's orientation. Thus, setting the x-axis velocity of the ball to positive numbers will always move forward and follow the robot's orientation. The original shooting algorithm can be seen in earlier commits in `master` and `testing` branch.
+
+The algorithm for passing was developed by Nanda and optimized by Farrel. The algorithm here in `master` branch for passing was adopted, modified, and optimized by Farrel using Nanda's algorithm. Originally, the ball's Quaternion state update used an array of x, y, z, w of the robot with index from 0 to 3. However, the array was dynamic and this was prone to error as it sometimes the list is empty and caused several out of index error. Later, Farrel changed the dynamic array into the global variable of the robot's quaternion state for the ball's quaternion state update. This method is more fail-safe. 
+
+The other optimization by Farrel was adding a little bit of conditional in passing algorithm when the ball is received by robot_3. The added conditional is used to prevent the ball keep appearing in both robot_1 and robot_3. This happened because both robot are calling the service to set the ball in from of them. Hence, the ball was "trying" to appear in both robots. With this added conditional, the robot_1 will not call the service after passing and only robot_3 after receiving the ball will call the service.
+
+Nanda's original passing algorithm can be seen in branch `testing2` where he developed and tested the algorithm.
+
+Other minor optimizations like passing angle and angular velocity was also done by Farrel. The passing angle between the robot which passes the ball and the robot which receives the ball was reduced from < 0.05 radian to < 0.01 radian for greater accuracy. The angular velocity when correcting the orientation to the goal was increased from 0.2 rad/s to 0.4 rad/s for faster movement.
+
+Farrel also added `rosnode kill` command in `goalout_node.cpp` to shutdown all the robot nodes when the it restarts after goal or out. However, since the node is set to automatically run at launch and re-run when it crashes/shut down (`respawn = true`). The node will re-run in initial state condition. This is used to reboot the node back to the initial condition after goal or out to prevent errors.
+
+Note : branch `master` is intended to be the main and most stable program, while `testing` is the branch where Farrel develops the program and algorithm, and `testing2` is the branch where Nanda develops the program and algorithm.
+
+[**Click here to watch the video demonstration**](https://drive.google.com/file/d/1JsxeqhkQt6dOF6NjJHpbZxLlb17ZDDof/view?usp=sharing)
