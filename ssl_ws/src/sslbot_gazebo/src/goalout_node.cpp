@@ -17,7 +17,7 @@ void check_goal_out(const gazebo_msgs::ModelStates& msg)
     std_msgs::Float64 y;
     x.data = msg.pose[0].position.x;
     y.data = msg.pose[0].position.y;
-    if (x.data<=-6.2)  //goal or out enemy side
+    if (x.data<=-6.2 || y.data <=-4.5 || y.data >= 4.5 || x.data >=6.2)  //goal or out enemy side
     {
         if (!pause_physics && !reset)
         {
