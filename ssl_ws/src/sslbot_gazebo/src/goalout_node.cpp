@@ -28,7 +28,8 @@ void check_goal_out(const gazebo_msgs::ModelStates& msg)
         if (pause_physics && !reset)
         {
             clientReset.call(callReset);
-            sleep(1);
+            sleep(1); 
+            system("bash -c 'source /opt/ros/noetic/setup.bash; rosnode kill /robot_1.py /robot_3.py'"); //reboot the node to refresh the node
             reset = true;
         }
     }
