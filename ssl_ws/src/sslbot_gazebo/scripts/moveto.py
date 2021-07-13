@@ -67,10 +67,8 @@ def ballPos(msg):
             ballstate.model_state.pose.position.x = x + (0.09*math.sin((math.pi-(theta))-(math.pi/2)))
             ballstate.model_state.pose.position.y = y + (0.09*math.cos((math.pi-(theta))-(math.pi/2)))
             ballstate.model_state.pose.position.z = 0.05
-            ballstate.model_state.pose.orientation.x = rot_q.x
-            ballstate.model_state.pose.orientation.y = rot_q.y
-            ballstate.model_state.pose.orientation.z = rot_q.z
-            ballstate.model_state.pose.orientation.w = rot_q.w
+            ballstate.model_state.reference_frame = "world"
+            ballstate.model_state.pose.orientation = rot_q
             set_ball_service(ballstate) #call set_model_state to be in front of bot
         elif (isInEnemyPenalty(x,y)): 
             if (speed.linear.x==0 and speed.angular.z==0 and (3.08<=abs(theta)<=3.14)):
@@ -90,10 +88,8 @@ def ballPos(msg):
                 ballstate.model_state.pose.position.x = x + (0.09*math.sin((math.pi-(theta))-(math.pi/2)))
                 ballstate.model_state.pose.position.y = y + (0.09*math.cos((math.pi-(theta))-(math.pi/2)))
                 ballstate.model_state.pose.position.z = 0.05
-                ballstate.model_state.pose.orientation.x = rot_q.x
-                ballstate.model_state.pose.orientation.y = rot_q.y
-                ballstate.model_state.pose.orientation.z = rot_q.z
-                ballstate.model_state.pose.orientation.w = rot_q.w
+                ballstate.model_state.pose.orientation = rot_q
+                ballstate.model_state.reference_frame = "world"
                 set_ball_service(ballstate) #call set_model_state to be in front of bot
                 ball_x = x + (0.09*math.sin((math.pi-(theta))-(math.pi/2)))
                 ball_y = y + (0.09*math.cos((math.pi-(theta))-(math.pi/2)))
