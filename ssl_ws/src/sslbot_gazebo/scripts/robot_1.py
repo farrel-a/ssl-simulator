@@ -3,7 +3,7 @@
 import rospy
 from nav_msgs.msg import Odometry
 from tf.transformations import euler_from_quaternion
-from geometry_msgs.msg import Point, Twist
+from geometry_msgs.msg import Point, Twist, Quaternion
 from gazebo_msgs.msg import ModelStates
 from math import atan2
 import time
@@ -15,11 +15,12 @@ import math
 x = 0.0
 y = 0.0 
 theta = 0.0
-
+rot_q = Quaternion()
 def newOdom(msg):
     global x
     global y
     global theta
+    global rot_q
 
     x = msg.pose.pose.position.x
     y = msg.pose.pose.position.y
@@ -65,16 +66,21 @@ def ballPos(msg):
             ballstate.model_state.pose.position.x = x + (0.09*math.sin((math.pi-(theta))-(math.pi/2)))
             ballstate.model_state.pose.position.y = y + (0.09*math.cos((math.pi-(theta))-(math.pi/2)))
             ballstate.model_state.pose.position.z = 0.05
+            ballstate.model_state.pose.orientation.x = rot_q.x
+            ballstate.model_state.pose.orientation.y = rot_q.y
+            ballstate.model_state.pose.orientation.z = rot_q.z
+            ballstate.model_state.pose.orientation.w = rot_q.w
             set_ball_service(ballstate) #call set_model_state to be in front of bot
         elif (isInEnemyPenalty(x,y)): 
             if (speed.linear.x==0 and speed.angular.z==0 and (3.08<=abs(theta)<=3.14)):
                 ball_x = x + (0.09*math.sin((math.pi-(theta))-(math.pi/2)))
                 ball_y = y + (0.09*math.cos((math.pi-(theta))-(math.pi/2)))
                 ballstate.model_state.model_name = "ssl_ball_1"
-                ballstate.model_state.pose.position.x = ball_x
-                ballstate.model_state.pose.position.y = ball_y
-                ballstate.model_state.pose.position.z = 0.05
-                ballstate.model_state.twist.linear.x = -2.0
+                ballstate.model_state.reference_frame = "ssl_ball_1"
+                ballstate.model_state.pose.position.x = 0.0
+                ballstate.model_state.pose.position.y = 0.0
+                ballstate.model_state.pose.position.z = 0.0
+                ballstate.model_state.twist.linear.x = 2.0
                 set_ball_service(ballstate)
                 time.sleep(3)
                 visited = False
@@ -83,10 +89,13 @@ def ballPos(msg):
                 ballstate.model_state.pose.position.x = x + (0.09*math.sin((math.pi-(theta))-(math.pi/2)))
                 ballstate.model_state.pose.position.y = y + (0.09*math.cos((math.pi-(theta))-(math.pi/2)))
                 ballstate.model_state.pose.position.z = 0.05
+                ballstate.model_state.pose.orientation.x = rot_q.x
+                ballstate.model_state.pose.orientation.y = rot_q.y
+                ballstate.model_state.pose.orientation.z = rot_q.z
+                ballstate.model_state.pose.orientation.w = rot_q.w
                 set_ball_service(ballstate) #call set_model_state to be in front of bot
                 ball_x = x + (0.09*math.sin((math.pi-(theta))-(math.pi/2)))
                 ball_y = y + (0.09*math.cos((math.pi-(theta))-(math.pi/2)))
-
     else:
         goal.x = msg.pose[0].position.x # x values of ball
         goal.y = msg.pose[0].position.y # y values of ball
