@@ -200,3 +200,11 @@ Farrel also added `rosnode kill` command in `goalout_node.cpp` to shutdown all t
 Note : branch `master` is intended to be the main and most stable program, while `testing` is the branch where Farrel develops the program and algorithm, and `testing2` is the branch where Nanda develops the program and algorithm.
 
 [**Click here to watch the video demonstration**](https://drive.google.com/file/d/1JsxeqhkQt6dOF6NjJHpbZxLlb17ZDDof/view?usp=sharing)
+
+<p>&nbsp;</p>
+
+## GoalKeeping
+
+**15 July 2021 Update-1**
+
+Now the keeper (robot_2) has its own URDF file, modified so its movement mechanism is no longer using differential drive, but planar move. To do this we created URDF and xacro file exclusive for robot_2. Nanda do this because differential drive plugin cannot work in tandem with planar move plugin. The newly added urdf and xacro file is _turtlebot3_burger_planar.gazebo.xacro_ and _turtlebot3_burger_planar.urdf.xacro_. after that, the robot can accept linear.y velocity and move sideways. The robot subscribe to topic /planar_vel for its velocity.
