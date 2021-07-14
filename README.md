@@ -12,13 +12,18 @@
 <p>&nbsp;</p>
 
 ## Launching World
-**Update 12 July 2021 New Branch "testing"**
+**Update 13 July 2021 New Branch "testing2"**
 
 **12 July 2021 Update-1**
 
-Terminal Run List:
+Terminal Run List for ball chaser and shooting:
 1. `$ roslaunch sslbot_gazebo sslbot.launch`
 2. `$ rosrun sslbot_gazebo moveto.py`
+
+Terminal Run List for ball chaser and shooting:
+1. `$ roslaunch sslbot_gazebo sslbot.launch`
+2. `$ rosrun sslbot_gazebo pass.py`
+3. `$ rosrun sslbot_gazebo receive_shoot.py`
 
 To launch world and spawn SSL Field and Robots, run this command :
 1. Clone the repository
@@ -163,3 +168,12 @@ The `goalout_node` automatically runs at launch. If the node crashes, it will au
 **Watch this goal !**
 
 ![](photos/goal.gif)
+
+## Passing and Shooting
+**13 July 2021 Update-1**
+
+Now the turtlebot can go to the ball, catch it, and then pass it to another robot (the other robot doesn't catch the ball at the moment). here we utilize the orientation of the ball to always match the robot that currently hold it so it can be easily used for other program not just shooting. The reference frame is also getting an update for the shoot code.
+
+**13 July 2021 Update-2**
+
+Now the turtlebot can pass the ball and the other turtlebot catch it and head for shooting position and launch the shot. There is a bug where the ball blink and glitching left and right after the ball is passed down to the other turtlebot. 
