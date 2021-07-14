@@ -77,6 +77,12 @@ ball_state topic in rostopic echo
 
 ![](https://i.ibb.co/HpddYNW/Screenshot-from-2021-07-10-06-51-53.png)
 
+
+11. **(14 July 2021 Update-1)** : localized the turtlebot3 urdf file that we used to make it better when development in changing hands and using different computer. We also localized the meshes that the urdf used.
+
+
+12. **(14 July 2021 Update-2)** : updated the launch file to look for the model and asset in its own package
+
 <p>&nbsp;</p>
 
 ## Robot Basic Movement
