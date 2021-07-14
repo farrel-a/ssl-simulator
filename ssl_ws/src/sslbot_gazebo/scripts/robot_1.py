@@ -139,19 +139,25 @@ while not rospy.is_shutdown():
     if (not(dribbling) and (not(passing))):
         if (angle_to_goal - theta1) > 0.2:
             speed.linear.x = 0.0
-            speed.angular.z = 0.4
+            if (angle_to_goal - theta1) > 0.5 :
+                speed.angular.z = 2.0
+            else:
+                speed.angular.z = 0.4
         elif (angle_to_goal - theta1) < -0.2:
             speed.linear.x = 0.0
-            speed.angular.z = -0.4
+            if (angle_to_goal - theta1) < -0.5:
+                speed.angular.z = -2.0
+            else:
+                speed.angular.z = -0.4
         else:
             speed.angular.z = 0.0 
             speed.linear.x = 0.6
     else:
         if (angle_to_friend - theta1) > 0.01:
-            speed.angular.z = 0.4
+            speed.angular.z = 0.5
             speed.linear.x = 0.0
         elif (angle_to_friend - theta1) < -0.01:
-            speed.angular.z = -0.4
+            speed.angular.z = -0.5
             speed.linear.x = 0.0
         else :
             speed.angular.z = 0.0

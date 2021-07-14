@@ -142,10 +142,16 @@ while not rospy.is_shutdown():
     if (not(isInEnemyPenalty(x3,y3)) and dribbling):
         if (angle_to_goal - theta3) > 0.2:
             speed.linear.x = 0.0
-            speed.angular.z = 0.4
+            if (angle_to_goal - theta3) > 0.5 :
+                speed.angular.z = 2.0
+            else:
+                speed.angular.z = 0.4
         elif (angle_to_goal - theta3) < -0.2:
             speed.linear.x = 0.0
-            speed.angular.z = -0.4
+            if (angle_to_goal - theta3) < -0.5:
+                speed.angular.z = -2.0
+            else:
+                speed.angular.z = -0.4
         else:
             speed.angular.z = 0.0 
             speed.linear.x = 0.6
@@ -158,7 +164,7 @@ while not rospy.is_shutdown():
                 speed.angular.z = 0.0
                 speed.linear.x = 0.0
             else :
-                speed.angular.z = 0.4
+                speed.angular.z = 1.0
                 speed.linear.x = 0.0
         else:
             speed.linear.x = 0.0
