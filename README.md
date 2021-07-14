@@ -177,3 +177,24 @@ Now the turtlebot can go to the ball, catch it, and then pass it to another robo
 **13 July 2021 Update-2**
 
 Now the turtlebot can pass the ball and the other turtlebot catch it and head for shooting position and launch the shot. There is a bug where the ball blink and glitching left and right after the ball is passed down to the other turtlebot. 
+
+<p>&nbsp;</p>
+
+## GoalKeeping
+
+**15 July 2021 Update-1**
+
+Now the keeper (robot_2) has its own URDF file, modified so its movement mechanism is no longer using differential drive, but planar move. To do this we created URDF and xacro file exclusive for robot_2. Nanda do this because differential drive plugin cannot work in tandem with planar move plugin. The newly added urdf and xacro file is _turtlebot3_burger_planar.gazebo.xacro_ and _turtlebot3_burger_planar.urdf.xacro_. after that, the robot can accept linear.y velocity. The robot subscribe to topic /planar_vel for its velocity.  
+
+
+**15 July 2021 Update-2**
+
+Now the turtlebot (robot_2) can do some goalkeeping action. When the ball is on the left side of the robot, it will strafe to the left, and whent the ball is on the right side of the robot, it will strafe to the right. Right now after the ball is close enough to the robot (0.15 m), it will catch the ball and then pass the ball to the other robot (currently robot_3). To run the simulation, use
+```
+$ roslaunch sslbot_gazebo sslbot.launch
+```
+and in other terminal run this command
+```
+$ rosrun sslbot_gazebo keeper.py
+```
+after that you can play around with the ball to see the keeper reaction
