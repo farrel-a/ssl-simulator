@@ -46,6 +46,21 @@ def newOdom3(msg):
     rot3_q = msg.pose.pose.orientation
     (roll, pitch, theta3) = euler_from_quaternion([rot3_q.x, rot3_q.y, rot3_q.z, rot3_q.w])
 
+x5 = 0.0
+y5 = 0.0
+theta5 = 0.0
+rot5_q = Quaternion()
+def newOdom5(msg):
+    global x5
+    global y5
+    global theta5
+    global rot5_q
+    x5 = msg.pose.pose.position.x
+    y5 = msg.pose.pose.position.y
+
+    rot5_q = msg.pose.pose.orientation
+    (roll, pitch, theta5) = euler_from_quaternion([rot5_q.x, rot5_q.y, rot5_q.z, rot5_q.w])
+
 def isInEnemyPenalty(a,b):
     if ((-7.0<=a<=-4.0) and (-0.5<=b<=0.5)):
         return True
@@ -76,6 +91,7 @@ goal = Point() #global goal variable
 visited = False
 dribbling = False #global driblling variable
 passing = False #global passing condition (True : should pass, False : should not pass)
+direction = 0.0 #global shoot direction (in rad)
 
 def ballPos(msg):
     global goal
@@ -98,7 +114,7 @@ def ballPos(msg):
             set_ball_service(ballstate) #call set_model_state to set ball in front of bot
 
         elif (isInEnemyPenalty(x3,y3)): 
-            if (speed.linear.x==0 and speed.angular.z==0 and (3.08<=abs(theta3)<=3.14)):
+            if (speed.linear.x==0 and speed.angular.z==0 and (2.88<=abs(theta3)<=2.96)):
                 ballstate.model_state.model_name = "ssl_ball_1"
                 ballstate.model_state.pose.position.x = 0.0
                 ballstate.model_state.pose.position.y = 0.0
@@ -126,6 +142,7 @@ def ballPos(msg):
 sub = rospy.Subscriber("/robot_1/odom", Odometry, newOdom1)
 sub2 = rospy.Subscriber("/ball_state", ModelStates, ballPos)
 sub3 = rospy.Subscriber("/robot_3/odom", Odometry, newOdom3)
+sub4 = rospy.Subscriber("/robot_5/odom", Odometry, newOdom5)
 pub = rospy.Publisher("/robot_3/cmd_vel", Twist, queue_size = 10)
 pub2 = rospy.Publisher("/ball_on_robot_t1", Int64, queue_size=1)
 
@@ -157,13 +174,16 @@ while not rospy.is_shutdown():
             speed.linear.x = 0.6
     else:
         if (isInEnemyPenalty(x3,y3)):
-            if ((3.08<=abs(theta3)<=3.14) and speed.angular.z != 0):
+            if ((2.88<=abs(theta3)<=2.96) and speed.angular.z != 0):
                 speed.angular.z = 0.0
                 speed.linear.x = 0.0
-            elif ((3.08<=abs(theta3)<=3.14) and speed.angular.z == 0):
+            elif ((2.88<=abs(theta3)<=2.96) and speed.angular.z == 0):
                 speed.angular.z = 0.0
                 speed.linear.x = 0.0
-            else :
+            elif (y5 > 0):
+                speed.angular.z = -1.0
+                speed.linear.x = 0.0
+            elif (y5 < 0):
                 speed.angular.z = 1.0
                 speed.linear.x = 0.0
         else:
