@@ -5,7 +5,7 @@ from nav_msgs.msg import Odometry
 from tf.transformations import euler_from_quaternion
 from geometry_msgs.msg import Point, Twist, Quaternion
 from gazebo_msgs.msg import ModelStates
-from std_msgs.msg import Int64
+from std_msgs.msg import Int8
 from math import atan2
 import time
 from gazebo_msgs.srv import *
@@ -13,22 +13,7 @@ from std_srvs.srv import *
 import math
 
 # initialize as float
-x1 = 0.0
-y1 = 0.0 
-theta1 = 0.0
-rot1_q = Quaternion()
 
-def newOdom1(msg):
-    global x1
-    global y1
-    global theta1
-    global rot1_q
-
-    x1 = msg.pose.pose.position.x
-    y1 = msg.pose.pose.position.y
-
-    rot1_q = msg.pose.pose.orientation
-    (roll, pitch, theta1) = euler_from_quaternion([rot1_q.x, rot1_q.y, rot1_q.z, rot1_q.w])
 
 x3 = 0.0
 y3 = 0.0
@@ -93,72 +78,148 @@ dribbling = False #global driblling variable
 passing = False #global passing condition (True : should pass, False : should not pass)
 direction = 0.0 #global shoot direction (in rad)
 shooting = False #global shooting variable
+x_ball = 0.0
+y_ball = 0.0
+
 def ballPos(msg):
     global goal
     global shooting
     global ballstate
     global dribbling
     global visited
-    distance = ((goal.x-x3)**2 + (goal.y-y3)**2)**0.5
+    global x_ball
+    global y_ball
+    x_ball = msg.pose[0].position.x
+    y_ball = msg.pose[0].position.y
+    distance = ((x_ball-x3)**2 + (y_ball-y3)**2)**0.5
     dribbling = isDribbling(distance)
-    if (dribbling): #dribbling == True
-        goal.x = -4.50
-        goal.y = -0.40
+    if (bt2):
+        shooting = False
+        goal.x = 5.2
+        goal.y = 1.2
+    else: #bt2 == False
+        if (dribbling): #dribbling == True
+            goal.x = -4.50
+            goal.y = -0.40
 
-        if (not(isInEnemyPenalty(x3,y3))):
-            ballstate.model_state.model_name = "ssl_ball_1"
-            ballstate.model_state.pose.position.x = x3 + (0.09*math.sin((math.pi-(theta3))-(math.pi/2)))
-            ballstate.model_state.pose.position.y = y3 + (0.09*math.cos((math.pi-(theta3))-(math.pi/2)))
-            ballstate.model_state.pose.position.z = 0.05
-            ballstate.model_state.pose.orientation = rot3_q
-            ballstate.model_state.reference_frame = "world"
-            set_ball_service(ballstate) #call set_model_state to set ball in front of bot
-
-        elif (isInEnemyPenalty(x3,y3) and not(shooting)): 
-            if (speed.linear.x==0 and speed.angular.z==0 and (2.80<=abs(theta3)<=2.82)):
-                ballstate.model_state.model_name = "ssl_ball_1"
-                ballstate.model_state.pose.position.x = 0.0
-                ballstate.model_state.pose.position.y = 0.0
-                ballstate.model_state.pose.position.z = 0.0
-                ballstate.model_state.twist.linear.x = 2.0
-                ballstate.model_state.reference_frame = "ssl_ball_1"
-                set_ball_service(ballstate)  #shoot according to the robot's orientation
-                dribbling = False
-                shooting = True
-                time.sleep(3)
-                visited = False
-            elif not(shooting):
+            if (not(isInEnemyPenalty(x3,y3))):
+                shooting = False
                 ballstate.model_state.model_name = "ssl_ball_1"
                 ballstate.model_state.pose.position.x = x3 + (0.09*math.sin((math.pi-(theta3))-(math.pi/2)))
                 ballstate.model_state.pose.position.y = y3 + (0.09*math.cos((math.pi-(theta3))-(math.pi/2)))
                 ballstate.model_state.pose.position.z = 0.05
                 ballstate.model_state.pose.orientation = rot3_q
                 ballstate.model_state.reference_frame = "world"
-                set_ball_service(ballstate) # call set_model_state to set ball in front of bot
+                set_ball_service(ballstate) #call set_model_state to set ball in front of bot
 
-    else: #dribbling == False
-        goal.x = msg.pose[0].position.x # x values of ball
-        goal.y = msg.pose[0].position.y # y values of ball
+            elif (isInEnemyPenalty(x3,y3) and not(shooting)): 
+                if (speed.linear.x==0 and speed.angular.z==0 and (2.80<=abs(theta3)<=2.82)):
+                    ballstate.model_state.model_name = "ssl_ball_1"
+                    ballstate.model_state.pose.position.x = 0.0
+                    ballstate.model_state.pose.position.y = 0.0
+                    ballstate.model_state.pose.position.z = 0.0
+                    ballstate.model_state.twist.linear.x = 2.0
+                    ballstate.model_state.reference_frame = "ssl_ball_1"
+                    set_ball_service(ballstate)  #shoot according to the robot's orientation
+                    dribbling = False
+                    shooting = True
+                    time.sleep(3)
+                    visited = False
+                elif not(shooting):
+                    ballstate.model_state.model_name = "ssl_ball_1"
+                    ballstate.model_state.pose.position.x = x3 + (0.09*math.sin((math.pi-(theta3))-(math.pi/2)))
+                    ballstate.model_state.pose.position.y = y3 + (0.09*math.cos((math.pi-(theta3))-(math.pi/2)))
+                    ballstate.model_state.pose.position.z = 0.05
+                    ballstate.model_state.pose.orientation = rot3_q
+                    ballstate.model_state.reference_frame = "world"
+                    set_ball_service(ballstate) # call set_model_state to set ball in front of bot
 
 # Publisher & Subscriber definition
-sub = rospy.Subscriber("/robot_1/odom", Odometry, newOdom1)
 sub2 = rospy.Subscriber("/ball_state", ModelStates, ballPos)
 sub3 = rospy.Subscriber("/robot_3/odom", Odometry, newOdom3)
 sub4 = rospy.Subscriber("/robot_5/odom", Odometry, newOdom5)
 pub = rospy.Publisher("/robot_3/cmd_vel", Twist, queue_size = 10)
-pub2 = rospy.Publisher("/ball_on_robot_t1", Int64, queue_size=1)
+
+
+# Ball Possession Publisher & Subscriber
+br1 = False
+br2 = False #ball on robot_2
+br3 = False #ball on robot_3
+br4 = False
+br5 = False
+br6 = False
+bt1 = False #ball on team_1
+bt2 = False #ball on team_2
+
+def br2Callback(msg):
+    global br2
+    if msg.data == 1 :
+        br2 = True
+    else:
+        br2 = False
+
+def br1Callback(msg):
+    global br1
+    if msg.data == 1:
+        br1 = True
+    else:
+        br1 = False
+
+def br4Callback(msg):
+    global br4
+    if msg.data == 1:
+        br4 = True
+    else:
+        br4 = False
+
+def br5Callback(msg):
+    global br5
+    if msg.data == 1:
+        br5 = True
+    else:
+        br5 = False
+
+def br6Callback(msg):
+    global br6
+    if msg.data == 1:
+        br6 = True
+    else:
+        br6 = False
+
+def checkTeam(br_1, br_2, br_3, br_4, br_5, br_6):
+    global bt1 
+    global bt2
+    if (br_1 or br_2 or br_3):
+        bt1 = True
+        bt2 = False
+    elif (br_4 or br_5 or br_6):
+        bt1 = False
+        bt2 = True
+    else:
+        bt1 = False
+        bt2 = False
+
+pub2 = rospy.Publisher("/ball_on_robot_3", Int8, queue_size=1)
+sub4 = rospy.Subscriber("/ball_on_robot_2", Int8, br2Callback)
+sub5 = rospy.Subscriber("/ball_on_robot_1", Int8, br1Callback)
+sub6 = rospy.Subscriber("/ball_on_robot_4", Int8, br4Callback)
+sub7 = rospy.Subscriber("/ball_on_robot_5", Int8, br5Callback)
+sub8 = rospy.Subscriber("/ball_on_robot_6", Int8, br6Callback)
 
 speed = Twist() #global speed variable
 
 r = rospy.Rate(1000) #1000 Hz
 while not rospy.is_shutdown():
     if (dribbling):
-        pub2.publish(1) # 1 : dribbling published (one of robot in t1 is dribbling)
-
+        pub2.publish(1) # 1 : dribbling published 
+    else:
+        pub2.publish(0) # 0 : not dribbling published
+    
+    checkTeam(br1, br2, br3, br4, br5, br6)
     inc_x = goal.x -x3
     inc_y = goal.y -y3
     angle_to_goal = atan2(inc_y, inc_x)
-    if (not(isInEnemyPenalty(x3,y3)) and dribbling):
+    if (bt2):
         if (angle_to_goal - theta3) > 0.2:
             speed.linear.x = 0.0
             if (angle_to_goal - theta3) > 0.5 :
@@ -174,23 +235,40 @@ while not rospy.is_shutdown():
         else:
             speed.angular.z = 0.0 
             speed.linear.x = 0.6
-    else:
-        if (isInEnemyPenalty(x3,y3)):
-            if ((2.80<=abs(theta3)<=2.82) and speed.angular.z != 0):
-                speed.angular.z = 0.0
+    else: #bt2 == False
+        if (not(isInEnemyPenalty(x3,y3)) and dribbling):
+            if (angle_to_goal - theta3) > 0.2:
                 speed.linear.x = 0.0
-            elif ((2.80<=abs(theta3)<=2.82) and speed.angular.z == 0):
-                speed.angular.z = 0.0
+                if (angle_to_goal - theta3) > 0.5 :
+                    speed.angular.z = 2.0
+                else:
+                    speed.angular.z = 0.4
+            elif (angle_to_goal - theta3) < -0.2:
                 speed.linear.x = 0.0
-            elif (y5 > 0):
-                speed.angular.z = -1.0
-                speed.linear.x = 0.0
-            elif (y5 < 0):
-                speed.angular.z = 1.0
-                speed.linear.x = 0.0
+                if (angle_to_goal - theta3) < -0.5:
+                    speed.angular.z = -2.0
+                else:
+                    speed.angular.z = -0.4
+            else:
+                speed.angular.z = 0.0 
+                speed.linear.x = 0.6
         else:
-            speed.linear.x = 0.0
-            speed.angular.z = 0.0
+            if (isInEnemyPenalty(x3,y3)):
+                if ((2.80<=abs(theta3)<=2.82) and speed.angular.z != 0):
+                    speed.angular.z = 0.0
+                    speed.linear.x = 0.0
+                elif ((2.80<=abs(theta3)<=2.82) and speed.angular.z == 0):
+                    speed.angular.z = 0.0
+                    speed.linear.x = 0.0
+                elif (y5 > 0):
+                    speed.angular.z = -1.0
+                    speed.linear.x = 0.0
+                elif (y5 < 0):
+                    speed.angular.z = 1.0
+                    speed.linear.x = 0.0
+            else:
+                speed.linear.x = 0.0
+                speed.angular.z = 0.0
 
     pub.publish(speed)
     r.sleep()
