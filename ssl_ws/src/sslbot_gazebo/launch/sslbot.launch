@@ -5,6 +5,8 @@
   <arg name="second_tb3" default="robot_2"/>
   <arg name="third_tb3"  default="robot_3"/>
 
+  <arg name="fifth_tb3"  default="robot_5"/>
+
   <arg name="first_tb3_x_pos" default=" 2.0"/>
   <arg name="first_tb3_y_pos" default="-2.0"/>
   <arg name="first_tb3_z_pos" default=" 0.0"/>
@@ -19,6 +21,11 @@
   <arg name="third_tb3_y_pos" default=" 2.0"/>
   <arg name="third_tb3_z_pos" default=" 0.0"/>
   <arg name="third_tb3_yaw"   default=" 3.14"/>
+
+  <arg name="fifth_tb3_x_pos" default=" -5.8"/>
+  <arg name="fifth_tb3_y_pos" default=" 0.0"/>
+  <arg name="fifth_tb3_z_pos" default=" 0.0"/>
+  <arg name="fifth_tb3_yaw"   default=" 0.0"/>
 
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
     <arg name="world_name" value="$(find sslbot_gazebo)/worlds/sslbot.world"/>
@@ -63,12 +70,27 @@
     <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-urdf -model $(arg third_tb3) -x $(arg third_tb3_x_pos) -y $(arg third_tb3_y_pos) -z $(arg third_tb3_z_pos) -Y $(arg third_tb3_yaw) -param robot_description" />
   </group>
   
+  <group ns = "$(arg fifth_tb3)">
+    <param name="robot_description" command="$(find xacro)/xacro --inorder $(find sslbot_gazebo)/urdf/turtlebot3_$(arg model)_planar.urdf.xacro" />
+
+    <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" output="screen">
+      <param name="publish_frequency" type="double" value="50.0" />
+      <param name="tf_prefix" value="$(arg fifth_tb3)" />
+    </node>
+
+    <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-urdf -model $(arg fifth_tb3) -x $(arg fifth_tb3_x_pos) -y $(arg fifth_tb3_y_pos) -z $(arg fifth_tb3_z_pos) -Y $(arg fifth_tb3_yaw) -param robot_description" />
+  </group>
+  
   <node name="ball_state_pub" pkg="sslbot_gazebo" type="ball_state_pub" respawn="true" />
   
   <node name="goalout_node" pkg="sslbot_gazebo" type="goalout_node" respawn="true" />
 
   <node name="robot_1.py" pkg="sslbot_gazebo" type="robot_1.py" respawn="true" />
 
+  <node name="robot_2.py" pkg="sslbot_gazebo" type="robot_2.py" respawn="true" />
+
   <node name="robot_3.py" pkg="sslbot_gazebo" type="robot_3.py" respawn="true" />
+
+  <node name="robot_5.py" pkg="sslbot_gazebo" type="robot_5.py" respawn="true" />
 
 </launch>
