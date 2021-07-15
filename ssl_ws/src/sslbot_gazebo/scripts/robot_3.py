@@ -92,9 +92,10 @@ visited = False
 dribbling = False #global driblling variable
 passing = False #global passing condition (True : should pass, False : should not pass)
 direction = 0.0 #global shoot direction (in rad)
-
+shooting = False #global shooting variable
 def ballPos(msg):
     global goal
+    global shooting
     global ballstate
     global dribbling
     global visited
@@ -102,7 +103,7 @@ def ballPos(msg):
     dribbling = isDribbling(distance)
     if (dribbling): #dribbling == True
         goal.x = -4.50
-        goal.y = -0.35
+        goal.y = -0.40
 
         if (not(isInEnemyPenalty(x3,y3))):
             ballstate.model_state.model_name = "ssl_ball_1"
@@ -113,8 +114,8 @@ def ballPos(msg):
             ballstate.model_state.reference_frame = "world"
             set_ball_service(ballstate) #call set_model_state to set ball in front of bot
 
-        elif (isInEnemyPenalty(x3,y3)): 
-            if (speed.linear.x==0 and speed.angular.z==0 and (2.88<=abs(theta3)<=2.96)):
+        elif (isInEnemyPenalty(x3,y3) and not(shooting)): 
+            if (speed.linear.x==0 and speed.angular.z==0 and (2.80<=abs(theta3)<=2.82)):
                 ballstate.model_state.model_name = "ssl_ball_1"
                 ballstate.model_state.pose.position.x = 0.0
                 ballstate.model_state.pose.position.y = 0.0
@@ -123,9 +124,10 @@ def ballPos(msg):
                 ballstate.model_state.reference_frame = "ssl_ball_1"
                 set_ball_service(ballstate)  #shoot according to the robot's orientation
                 dribbling = False
+                shooting = True
                 time.sleep(3)
                 visited = False
-            else:
+            elif not(shooting):
                 ballstate.model_state.model_name = "ssl_ball_1"
                 ballstate.model_state.pose.position.x = x3 + (0.09*math.sin((math.pi-(theta3))-(math.pi/2)))
                 ballstate.model_state.pose.position.y = y3 + (0.09*math.cos((math.pi-(theta3))-(math.pi/2)))
@@ -174,10 +176,10 @@ while not rospy.is_shutdown():
             speed.linear.x = 0.6
     else:
         if (isInEnemyPenalty(x3,y3)):
-            if ((2.88<=abs(theta3)<=2.96) and speed.angular.z != 0):
+            if ((2.80<=abs(theta3)<=2.82) and speed.angular.z != 0):
                 speed.angular.z = 0.0
                 speed.linear.x = 0.0
-            elif ((2.88<=abs(theta3)<=2.96) and speed.angular.z == 0):
+            elif ((2.80<=abs(theta3)<=2.82) and speed.angular.z == 0):
                 speed.angular.z = 0.0
                 speed.linear.x = 0.0
             elif (y5 > 0):
