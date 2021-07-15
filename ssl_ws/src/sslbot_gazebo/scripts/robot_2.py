@@ -5,7 +5,7 @@ from nav_msgs.msg import Odometry
 from tf.transformations import euler_from_quaternion
 from geometry_msgs.msg import Point, Twist, Quaternion
 from gazebo_msgs.msg import ModelStates
-from std_msgs.msg import Int64
+from std_msgs.msg import Int8
 from math import atan2
 import time
 from gazebo_msgs.srv import *
@@ -30,21 +30,21 @@ def newOdom2(msg):
     rot2_q = msg.pose.pose.orientation
     (roll, pitch, theta2) = euler_from_quaternion([rot2_q.x, rot2_q.y, rot2_q.z, rot2_q.w])
 
-x3 = 0.0
-y3 = 0.0
-theta3 = 0.0
-rot3_q = Quaternion()
+x1 = 0.0
+y1 = 0.0
+theta1 = 0.0
+rot1_q = Quaternion()
 
-def newOdom3(msg):
-    global x3
-    global y3
-    global theta3
-    global rot3_q
-    x3 = msg.pose.pose.position.x
-    y3 = msg.pose.pose.position.y
+def newOdom1(msg):
+    global x1
+    global y1
+    global theta1
+    global rot1_q
+    x1 = msg.pose.pose.position.x
+    y1 = msg.pose.pose.position.y
 
-    rot3_q = msg.pose.pose.orientation
-    (roll, pitch, theta3) = euler_from_quaternion([rot3_q.x, rot3_q.y, rot3_q.z, rot3_q.w])
+    rot1_q = msg.pose.pose.orientation
+    (roll, pitch, theta1) = euler_from_quaternion([rot1_q.x, rot1_q.y, rot1_q.z, rot1_q.w])
 
 def isDribbling (d):
     # d : distance
@@ -60,14 +60,12 @@ set_ball_service = rospy.ServiceProxy('/gazebo/set_model_state', SetModelState)
 ballstate = SetModelStateRequest() #global ballstate request varible
 goal = Point() #global goal variable
 visited = False
-# ball_x = 0.0
-# ball_y = 0.0
 dribbling = False #global driblling variable
 passing = False #global passing condition (True : should pass, False : should not pass)
 distance = 0.0
 x_ball = 0.0
 y_ball = 0.0
-
+moving = True
 def ballPos(msg):
     global goal
     global ballstate
@@ -77,73 +75,135 @@ def ballPos(msg):
     global passing
     global x_ball
     global y_ball
-    distance = ((goal.x-x2)**2 + (goal.y-y2)**2)**0.5
+    global moving
+    x_ball = msg.pose[0].position.x
+    y_ball = msg.pose[0].position.y
+    distance = ((x_ball-x2)**2 + (y_ball-y2)**2)**0.5
     dribbling = isDribbling(distance)
-    if (dribbling): #dribbling == True
-        if (planar_speed.linear.y==0 and planar_speed.angular.z==0 and (abs(angle_to_friend3-theta2) < 0.01) and not(passing)):
-            ballstate.model_state.model_name = "ssl_ball_1"
-            ballstate.model_state.pose.position.x = 0.0
-            ballstate.model_state.pose.position.y = 0.0
-            ballstate.model_state.pose.position.z = 0.0
-            ballstate.model_state.twist.linear.x = 2.0
-            ballstate.model_state.reference_frame = "ssl_ball_1"
-            set_ball_service(ballstate)
-            time.sleep(3)
-            passing = True
-
-        elif (not(passing)): #passing == False
+    if (dribbling):
+        if (moving and not passing):
+            passing = False
             ballstate.model_state.model_name = "ssl_ball_1"
             ballstate.model_state.pose.position.x = x2 + (0.09*math.sin((math.pi-(theta2))-(math.pi/2)))
             ballstate.model_state.pose.position.y = y2 + (0.09*math.cos((math.pi-(theta2))-(math.pi/2)))
             ballstate.model_state.pose.position.z = 0.05
             ballstate.model_state.pose.orientation = rot2_q
             ballstate.model_state.reference_frame = "world"
-            set_ball_service(ballstate) #call set_model_state to be in front of bot
-
-    else: #dribbling == False
+            set_ball_service(ballstate)
+        else: # moving == False
+            if ((abs(angle_to_friend1-theta2) < 0.01) and not(passing)):
+                ballstate.model_state.model_name = "ssl_ball_1"
+                ballstate.model_state.pose.position.x = 0.0
+                ballstate.model_state.pose.position.y = 0.0
+                ballstate.model_state.pose.position.z = 0.0
+                ballstate.model_state.twist.linear.x = 2.0
+                ballstate.model_state.reference_frame = "ssl_ball_1"
+                moving = True
+                dribbling = False
+                passing = True
+                set_ball_service(ballstate)
+                time.sleep(3)
+                
+            elif (not(passing)): # planar_speed.angular.z != 0
+                ballstate.model_state.model_name = "ssl_ball_1"
+                ballstate.model_state.pose.position.x = x2 + (0.09*math.sin((math.pi-(theta2))-(math.pi/2)))
+                ballstate.model_state.pose.position.y = y2 + (0.09*math.cos((math.pi-(theta2))-(math.pi/2)))
+                ballstate.model_state.pose.position.z = 0.05
+                ballstate.model_state.pose.orientation = rot2_q
+                ballstate.model_state.reference_frame = "world"
+                set_ball_service(ballstate)
+    else:
+        dribbling = False
         passing = False
-        goal.x = msg.pose[0].position.x # x values of ball
-        goal.y = msg.pose[0].position.y # y values of ball
-    
-    x_ball = msg.pose[0].position.x
-    y_ball = msg.pose[0].position.y
 
 # Publisher & Subscriber definition
 sub = rospy.Subscriber("/robot_2/odom", Odometry, newOdom2)
 sub2 = rospy.Subscriber("/ball_state", ModelStates, ballPos)
-sub3 = rospy.Subscriber("/robot_3/odom", Odometry, newOdom3)
+sub3 = rospy.Subscriber("/robot_1/odom", Odometry, newOdom1)
 pub2 = rospy.Publisher("/robot_2/planar_vel", Twist, queue_size = 10)
+pub3 = rospy.Publisher("/ball_on_robot_2", Int8, queue_size=1)
 
 speed = Twist() #global speed variable
 planar_speed = Twist()
+correction = False #GK orientation correction
 
 r = rospy.Rate(1000) #1000 Hz
 while not rospy.is_shutdown():
-
+    if dribbling:
+        pub3.publish(1) # 1 : dribbling published
+    else:
+        pub3.publish(0) # 0 : not dribbling published
 
     inc_x = goal.x -x2
     inc_y = goal.y -y2
-    inc_x_friend3 = x3 - x2
-    inc_y_friend3 = y3 - y2
+    inc_x_friend1 = x1 - x2
+    inc_y_friend1 = y1 - y2
     angle_to_goal = atan2(inc_y, inc_x)
-    angle_to_friend3 = atan2(inc_y_friend3, inc_x_friend3)
-    if ((y_ball - 0.01) <= y2 <= (y_ball + 0.01)):
-        planar_speed.linear.x = 0.0
-        planar_speed.linear.y = 0.0
-    elif (y_ball < y2):
-        if (y2 >= -1.8):
+    angle_to_friend1 = atan2(inc_y_friend1, inc_x_friend1)
+    if correction:
+        if (not(3.12 <= abs(theta2) <= 3.14)):
+            planar_speed.angular.z = 1.0
+            planar_speed.linear.x = 0.0
+            planar_speed.linear.y = 0.0
+        else:
+            planar_speed.angular.z = 0.0
+            planar_speed.linear.x = 0.0
+            planar_speed.linear.y = 0.0
+            correction = False 
+    
+    elif (not(dribbling) and not(correction)):
+        if ((y_ball - 0.01) <= y2 <= (y_ball + 0.01)):
+            planar_speed.angular.z = 0.0
+            planar_speed.linear.x = 0.0
+            planar_speed.linear.y = 0.0
+        elif (y_ball < y2):
+            if (y2 >= -1.8):
+                planar_speed.angular.z = 0.0
+                planar_speed.linear.x = 0.0
+                planar_speed.linear.y = 0.5
+            else:
+                planar_speed.angular.z = 0.0
+                planar_speed.linear.x = 0.0
+                planar_speed.linear.y = 0.0
+        elif (y2 < y_ball):
+            if (y2 <= 1.8):
+                planar_speed.angular.z = 0.0
+                planar_speed.linear.x = 0.0
+                planar_speed.linear.y = -0.5
+            else:
+                planar_speed.angular.z = 0.0
+                planar_speed.linear.x = 0.0
+                planar_speed.linear.y = 0.0
+    elif (dribbling and moving and not(correction)):
+        if (-0.01 <= y2 <= 0.01):
+            planar_speed.angular.z = 0.0
+            planar_speed.linear.x = 0.0
+            planar_speed.linear.y = 0.0
+            moving = False
+        elif (y2 > 0.01):
+            planar_speed.angular.z = 0.0
             planar_speed.linear.x = 0.0
             planar_speed.linear.y = 0.5
-        else:
-            planar_speed.linear.x = 0.0
-            planar_speed.linear.y = 0.0
-    elif (y2 < y_ball):
-        if (y2 <= 1.8):
+        elif (y2 < -0.01):
+            planar_speed.angular.z = 0.0
             planar_speed.linear.x = 0.0
             planar_speed.linear.y = -0.5
-        else:
+    elif (dribbling and not(moving) and not(correction)):
+        if (angle_to_friend1 - theta2) > 0.01:
+            planar_speed.angular.z = 0.3
             planar_speed.linear.x = 0.0
             planar_speed.linear.y = 0.0
+            speed.linear.y = 0.0
+        elif (angle_to_friend1 - theta2) < -0.01:
+            planar_speed.angular.z = -0.3
+            planar_speed.linear.x = 0.0
+            planar_speed.linear.y = 0.0
+        else :
+            correction = True
+            planar_speed.angular.z = 0.0
+            planar_speed.linear.x = 0.0
+            planar_speed.linear.y = 0.0
+        
 
 
     # if (not(dribbling) and (not(passing))):
