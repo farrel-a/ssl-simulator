@@ -178,7 +178,9 @@ include_directories(
 ## in contrast to setup.py, you can choose the destination
 catkin_install_python(PROGRAMS
   scripts/robot_1.py
+  scripts/robot_2.py
   scripts/robot_3.py
+  scripts/robot_5.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
