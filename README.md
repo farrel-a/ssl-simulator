@@ -208,3 +208,19 @@ Note : branch `master` is intended to be the main and most stable program, while
 **15 July 2021 Update-1**
 
 Now the keeper (robot_2) has its own URDF file, modified so its movement mechanism is no longer using differential drive, but planar move. To do this we created URDF and xacro file exclusive for robot_2. Nanda do this because differential drive plugin cannot work in tandem with planar move plugin. The newly added urdf and xacro file is _turtlebot3_burger_planar.gazebo.xacro_ and _turtlebot3_burger_planar.urdf.xacro_. after that, the robot can accept linear.y velocity and move sideways. The robot subscribe to topic /planar_vel for its velocity.
+
+<p>&nbsp;</p>
+
+## Play Time !
+
+**16 July 2021 Update-1 New Branch "testing4"**
+
+Now the program fully simulates the robots playing soccer. The changing kickoff for each team has not been programmed. For testing reason, move one of the two robots farther that are chasing the ball once the program starts. This is to ensure only one of them gets the ball. After that, it will simulate and the simulation can be watched carefully. This is not the final version because it's not optimized yet. Also the Real Time Factor on Farrel's laptop is about 0.25 to 0.30, so expect the slow simulation.
+
+to start the program. Same as the previous update. Clone the repository, cd to `/ssl-simulator/ssl_ws`, then `catkin_make`, source `setup.bash`, and then run this command (all nodes are run automatically)
+
+```
+$ roslaunch sslbot_gazebo sslbot.launch
+```
+
+![](photos/view1.png)

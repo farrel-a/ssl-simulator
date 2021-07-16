@@ -21,6 +21,7 @@ void check_goal_out(const gazebo_msgs::ModelStates& msg)
     {
         if (!pause_physics && !reset)
         {
+            system("bash -c 'source /opt/ros/noetic/setup.bash; rosnode kill /robot_1.py /robot_2.py /robot_3.py /robot_4.py /robot_5.py /robot_6.py'"); //reboot the node to refresh the node
             clientPause.call(callPause);
             sleep(2);    
             pause_physics = true;
@@ -35,7 +36,6 @@ void check_goal_out(const gazebo_msgs::ModelStates& msg)
 
     if (pause_physics && reset)
     {
-        system("bash -c 'source /opt/ros/noetic/setup.bash; rosnode kill /robot_1.py /robot_3.py'"); //reboot the node to refresh the node
         pause_physics = false;
         reset = false;
     }
