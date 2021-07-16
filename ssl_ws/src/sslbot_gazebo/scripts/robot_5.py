@@ -116,34 +116,6 @@ def ballPos(msg):
         dribbling = False
         passing = False
 
-
-    #         set_ball_service(ballstate) #call set_model_state to be in front of bot
-    #     if (planar_speed.linear.y==0 and planar_speed.angular.z==0 and (abs(angle_to_friend3-theta5) < 0.01) and not(passing)):
-    #         ballstate.model_state.model_name = "ssl_ball_1"
-    #         ballstate.model_state.pose.position.x = 0.0
-    #         ballstate.model_state.pose.position.y = 0.0
-    #         ballstate.model_state.pose.position.z = 0.0
-    #         ballstate.model_state.twist.linear.x = 2.0
-    #         ballstate.model_state.reference_frame = "ssl_ball_1"
-    #         set_ball_service(ballstate)
-    #         time.sleep(3)
-    #         passing = True
-
-    #     elif (not(passing)): #passing == False
-    #         ballstate.model_state.model_name = "ssl_ball_1"
-    #         ballstate.model_state.pose.position.x = x5 + (0.09*math.sin((math.pi-(theta5))-(math.pi/2)))
-    #         ballstate.model_state.pose.position.y = y5 + (0.09*math.cos((math.pi-(theta5))-(math.pi/2)))
-    #         ballstate.model_state.pose.position.z = 0.05
-    #         ballstate.model_state.pose.orientation = rot5_q
-    #         ballstate.model_state.reference_frame = "world"
-    #         set_ball_service(ballstate) #call set_model_state to be in front of bot
-
-    # else: #dribbling == False
-    #     passing = False
-    #     goal.x = msg.pose[0].position.x # x values of ball
-    #     goal.y = msg.pose[0].position.y # y values of ball
-
-
 # Publisher & Subscriber definition
 sub = rospy.Subscriber("/robot_5/odom", Odometry, newOdom5)
 sub2 = rospy.Subscriber("/ball_state", ModelStates, ballPos)
@@ -232,38 +204,6 @@ while not rospy.is_shutdown():
             planar_speed.angular.z = 0.0
             planar_speed.linear.x = 0.0
             planar_speed.linear.y = 0.0
-        
-
-
-
-    # if (not(dribbling) and (not(passing))):
-    #     if (inc_y) > 0.15:
-    #         if (inc_y) < 0.3:
-    #             planar_speed.linear.y = -0.3
-    #         elif (y5 < 0.85) :
-    #             planar_speed.linear.y = -0.6
-    #         else:
-    #             planar_speed.linear.y = 0.0
-    #     elif (inc_y) < -0.15:
-    #         if (inc_y) > -0.3:
-    #             planar_speed.linear.y = 0.3
-    #         if (y5 > -0.85) :
-    #             planar_speed.linear.y = 0.6
-    #         else:
-    #             planar_speed.linear.y = 0.0
-    #     else:
-    #         planar_speed.linear.y = 0.0
-    # elif (dribbling):
-    #     if (angle_to_friend3 - theta5) > 0.01:
-    #         planar_speed.angular.z = 0.5
-    #         planar_speed.linear.y = 0.0
-    #     elif (angle_to_friend3 - theta5) < -0.01:
-    #         planar_speed.angular.z = -0.5
-    #         planar_speed.linear.y = 0.0
-    #     else :
-    #         planar_speed.angular.z = 0.0
-    #         planar_speed.linear.y = 0.0
-
 
     pub2.publish(planar_speed)
     r.sleep()

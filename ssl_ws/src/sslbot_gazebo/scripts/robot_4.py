@@ -60,14 +60,6 @@ def isDribbling (d):
     else:
         return False
 
-def shouldPass (d1,d2):
-    #d1 : distance between robot_1 and enemy goal
-    #d2 : distance between robot_1 and robot_3
-    if d1<d2:
-        return False #do not pass, go to enemy goal
-    else:
-        return True #pass to robot_3
-
 rospy.init_node("robot_4")
 rospy.wait_for_service('/gazebo/set_model_state')
 set_ball_service = rospy.ServiceProxy('/gazebo/set_model_state', SetModelState)
@@ -249,7 +241,6 @@ while not rospy.is_shutdown():
                 speed.angular.z = 0.0
                 speed.linear.x = 0.0
                 dribbling = False
-
 
     pub.publish(speed)
     r.sleep()

@@ -204,36 +204,5 @@ while not rospy.is_shutdown():
             planar_speed.linear.x = 0.0
             planar_speed.linear.y = 0.0
         
-
-
-    # if (not(dribbling) and (not(passing))):
-    #     if (inc_y) > 0.15:
-    #         if (inc_y) < 0.3:
-    #             planar_speed.linear.y = -0.3
-    #         elif (y2 < 0.85) :
-    #             planar_speed.linear.y = -0.6
-    #         else:
-    #             planar_speed.linear.y = 0.0
-    #     elif (inc_y) < -0.15:
-    #         if (inc_y) > -0.3:
-    #             planar_speed.linear.y = 0.3
-    #         if (y2 > -0.85) :
-    #             planar_speed.linear.y = 0.6
-    #         else:
-    #             planar_speed.linear.y = 0.0
-    #     else:
-    #         planar_speed.linear.y = 0.0
-    # elif (dribbling):
-    #     if (angle_to_friend3 - theta2) > 0.01:
-    #         planar_speed.angular.z = 0.5
-    #         planar_speed.linear.y = 0.0
-    #     elif (angle_to_friend3 - theta2) < -0.01:
-    #         planar_speed.angular.z = -0.5
-    #         planar_speed.linear.y = 0.0
-    #     else :
-    #         planar_speed.angular.z = 0.0
-    #         planar_speed.linear.y = 0.0
-
-
     pub2.publish(planar_speed)
     r.sleep()
