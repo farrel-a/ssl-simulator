@@ -71,4 +71,6 @@
 
   <node name="robot_3.py" pkg="sslbot_gazebo" type="robot_3.py" respawn="true" />
 
+  <node name="set_ball.py" pkg="sslbot_gazebo" type="set_ball.py" respawn="true" />
+
 </launch>
