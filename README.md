@@ -208,3 +208,14 @@ Note : branch `master` is intended to be the main and most stable program, while
 **15 July 2021 Update-1**
 
 Now the keeper (robot_2) has its own URDF file, modified so its movement mechanism is no longer using differential drive, but planar move. To do this we created URDF and xacro file exclusive for robot_2. Nanda do this because differential drive plugin cannot work in tandem with planar move plugin. The newly added urdf and xacro file is _turtlebot3_burger_planar.gazebo.xacro_ and _turtlebot3_burger_planar.urdf.xacro_. after that, the robot can accept linear.y velocity and move sideways. The robot subscribe to topic /planar_vel for its velocity.
+
+
+<p>&nbsp;</p>
+
+## Kickoff Procedure
+
+**16 July 2021 Update**
+
+Now after the one of the team scored a goal, the ball will spawn on the opposite team's side. Nanda do this with modified goalout_node to send an integer message to kickoff topic and after that, new node called set_ball will receive the message from that topic those message act as a decider to set the ball position on which side of the field.  
+
+But, there is still some bug where sometimes the ball will blink from the designated position to the origin point after we press the resume simulation button on the gazebo gui.
