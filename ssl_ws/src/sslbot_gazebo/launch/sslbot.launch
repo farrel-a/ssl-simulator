@@ -50,7 +50,7 @@
   </include>
 
   <group ns = "$(arg first_tb3)">
-    <param name="robot_description" command="$(find xacro)/xacro --inorder $(find sslbot_gazebo)/urdf/turtlebot3_$(arg model).urdf.xacro" />
+    <param name="robot_description" command="$(find xacro)/xacro --inorder $(find sslbot_gazebo)/urdf/sslbot_$(arg model).urdf.xacro" />
 
     <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" output="screen">
       <param name="publish_frequency" type="double" value="50.0" />
@@ -61,7 +61,7 @@
   </group>
 
   <group ns = "$(arg second_tb3)">
-    <param name="robot_description" command="$(find xacro)/xacro --inorder $(find sslbot_gazebo)/urdf/turtlebot3_$(arg model)_planar.urdf.xacro" />
+    <param name="robot_description" command="$(find xacro)/xacro --inorder $(find sslbot_gazebo)/urdf/sslbot_$(arg model)_planar.urdf.xacro" />
 
     <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" output="screen">
       <param name="publish_frequency" type="double" value="50.0" />
@@ -72,7 +72,7 @@
   </group>
 
   <group ns = "$(arg third_tb3)">
-    <param name="robot_description" command="$(find xacro)/xacro --inorder $(find sslbot_gazebo)/urdf/turtlebot3_$(arg model).urdf.xacro" />
+    <param name="robot_description" command="$(find xacro)/xacro --inorder $(find sslbot_gazebo)/urdf/sslbot_$(arg model).urdf.xacro" />
 
     <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" output="screen">
       <param name="publish_frequency" type="double" value="50.0" />
@@ -83,7 +83,7 @@
   </group>
 
   <group ns = "$(arg fourth_tb3)">
-    <param name="robot_description" command="$(find xacro)/xacro --inorder $(find sslbot_gazebo)/urdf/turtlebot3_$(arg model).urdf.xacro" />
+    <param name="robot_description" command="$(find xacro)/xacro --inorder $(find sslbot_gazebo)/urdf/sslbot_$(arg model).urdf.xacro" />
 
     <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" output="screen">
       <param name="publish_frequency" type="double" value="50.0" />
@@ -94,7 +94,7 @@
   </group>
   
   <group ns = "$(arg fifth_tb3)">
-    <param name="robot_description" command="$(find xacro)/xacro --inorder $(find sslbot_gazebo)/urdf/turtlebot3_$(arg model)_planar.urdf.xacro" />
+    <param name="robot_description" command="$(find xacro)/xacro --inorder $(find sslbot_gazebo)/urdf/sslbot_$(arg model)_planar.urdf.xacro" />
 
     <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" output="screen">
       <param name="publish_frequency" type="double" value="50.0" />
@@ -105,7 +105,7 @@
   </group>
 
   <group ns = "$(arg sixth_tb3)">
-    <param name="robot_description" command="$(find xacro)/xacro --inorder $(find sslbot_gazebo)/urdf/turtlebot3_$(arg model).urdf.xacro" />
+    <param name="robot_description" command="$(find xacro)/xacro --inorder $(find sslbot_gazebo)/urdf/sslbot_$(arg model).urdf.xacro" />
 
     <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" output="screen">
       <param name="publish_frequency" type="double" value="50.0" />
