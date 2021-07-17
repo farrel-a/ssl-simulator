@@ -33,7 +33,7 @@ void check_goal_out(const gazebo_msgs::ModelStates& msg)
         ballstate.request.model_state.pose.position.z = 0.0;
         ballstate.request.model_state.twist.linear.x = 0.0;
         ballstate.request.model_state.reference_frame = "world";
-        if (x.data<=-6.2)
+        if (x.data<=-6.2 || y.data <= -4.5)
         {
             robotstate1.request.model_state.model_name = "robot_1";
             robotstate1.request.model_state.pose.position.x = 2.0;
@@ -65,7 +65,7 @@ void check_goal_out(const gazebo_msgs::ModelStates& msg)
             robotstate6.request.model_state.pose.orientation.w = -0.93;
             robotstate6.request.model_state.reference_frame = "world";
         }
-        else if (x.data>=6.2)
+        else if (x.data>=6.2 || y.data >= 4.5)
         {
             robotstate1.request.model_state.model_name = "robot_1";
             robotstate1.request.model_state.pose.position.x = 0.5;
