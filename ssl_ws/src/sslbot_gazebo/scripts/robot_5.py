@@ -84,9 +84,9 @@ def ballPos(msg):
         if (moving and not passing):
             passing = False
             ballstate.model_state.model_name = "ssl_ball_1"
-            ballstate.model_state.pose.position.x = x5 + (0.09*math.sin((math.pi-(theta5))-(math.pi/2)))
-            ballstate.model_state.pose.position.y = y5 + (0.09*math.cos((math.pi-(theta5))-(math.pi/2)))
-            ballstate.model_state.pose.position.z = 0.05
+            ballstate.model_state.pose.position.x = x5 + (0.11*math.sin((math.pi-(theta5))-(math.pi/2)))
+            ballstate.model_state.pose.position.y = y5 + (0.11*math.cos((math.pi-(theta5))-(math.pi/2)))
+            ballstate.model_state.pose.position.z = 0.01
             ballstate.model_state.pose.orientation = rot5_q
             ballstate.model_state.reference_frame = "world"
             set_ball_service(ballstate)
@@ -106,9 +106,9 @@ def ballPos(msg):
                 
             elif (not(passing)): # planar_speed.angular.z != 0
                 ballstate.model_state.model_name = "ssl_ball_1"
-                ballstate.model_state.pose.position.x = x5 + (0.09*math.sin((math.pi-(theta5))-(math.pi/2)))
-                ballstate.model_state.pose.position.y = y5 + (0.09*math.cos((math.pi-(theta5))-(math.pi/2)))
-                ballstate.model_state.pose.position.z = 0.05
+                ballstate.model_state.pose.position.x = x5 + (0.11*math.sin((math.pi-(theta5))-(math.pi/2)))
+                ballstate.model_state.pose.position.y = y5 + (0.11*math.cos((math.pi-(theta5))-(math.pi/2)))
+                ballstate.model_state.pose.position.z = 0.01
                 ballstate.model_state.pose.orientation = rot5_q
                 ballstate.model_state.reference_frame = "world"
                 set_ball_service(ballstate)

@@ -103,9 +103,9 @@ def ballPos(msg):
 
             elif (not(passing)): #passing == False
                 ballstate.model_state.model_name = "ssl_ball_1"
-                ballstate.model_state.pose.position.x = x4 + (0.09*math.sin((math.pi-(theta4))-(math.pi/2)))
-                ballstate.model_state.pose.position.y = y4 + (0.09*math.cos((math.pi-(theta4))-(math.pi/2)))
-                ballstate.model_state.pose.position.z = 0.05
+                ballstate.model_state.pose.position.x = x4 + (0.11*math.sin((math.pi-(theta4))-(math.pi/2)))
+                ballstate.model_state.pose.position.y = y4 + (0.11*math.cos((math.pi-(theta4))-(math.pi/2)))
+                ballstate.model_state.pose.position.z = 0.01
                 ballstate.model_state.pose.orientation = rot4_q
                 ballstate.model_state.reference_frame = "world"
                 set_ball_service(ballstate) #call set_model_state to be in front of bot

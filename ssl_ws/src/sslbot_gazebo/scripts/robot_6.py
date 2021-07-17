@@ -94,14 +94,14 @@ def ballPos(msg):
     else: #bt1 == False
         if (dribbling): #dribbling == True
             goal.x = 4.50
-            goal.y = 0.40
+            goal.y = 0.35
 
             if (not(isInEnemyPenalty(x6,y6))):
                 shooting = False
                 ballstate.model_state.model_name = "ssl_ball_1"
-                ballstate.model_state.pose.position.x = x6 + (0.09*math.sin((math.pi-(theta6))-(math.pi/2)))
-                ballstate.model_state.pose.position.y = y6 + (0.09*math.cos((math.pi-(theta6))-(math.pi/2)))
-                ballstate.model_state.pose.position.z = 0.05
+                ballstate.model_state.pose.position.x = x6 + (0.11*math.sin((math.pi-(theta6))-(math.pi/2)))
+                ballstate.model_state.pose.position.y = y6 + (0.11*math.cos((math.pi-(theta6))-(math.pi/2)))
+                ballstate.model_state.pose.position.z = 0.01
                 ballstate.model_state.pose.orientation = rot6_q
                 ballstate.model_state.reference_frame = "world"
                 set_ball_service(ballstate) #call set_model_state to set ball in front of bot
@@ -121,9 +121,9 @@ def ballPos(msg):
                     visited = False
                 elif not(shooting):
                     ballstate.model_state.model_name = "ssl_ball_1"
-                    ballstate.model_state.pose.position.x = x6 + (0.09*math.sin((math.pi-(theta6))-(math.pi/2)))
-                    ballstate.model_state.pose.position.y = y6 + (0.09*math.cos((math.pi-(theta6))-(math.pi/2)))
-                    ballstate.model_state.pose.position.z = 0.05
+                    ballstate.model_state.pose.position.x = x6 + (0.11*math.sin((math.pi-(theta6))-(math.pi/2)))
+                    ballstate.model_state.pose.position.y = y6 + (0.11*math.cos((math.pi-(theta6))-(math.pi/2)))
+                    ballstate.model_state.pose.position.z = 0.01
                     ballstate.model_state.pose.orientation = rot6_q
                     ballstate.model_state.reference_frame = "world"
                     set_ball_service(ballstate) # call set_model_state to set ball in front of bot
