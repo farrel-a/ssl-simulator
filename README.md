@@ -94,7 +94,7 @@ Similar to how we handle shooting, we also use the `/gazebo/set_model_state` ser
 <p>&nbsp;</p>
 
 ## GoalKeeping
-The keeper can do some goalkeeping action. When the ball is on the left side of the robot, it will strafe to the left, and whent the ball is on the right side of the robot, it will strafe to the right. This is possible because we write a different plugin for our keeper model, not like the rest of the robot which utilize the `differential drive controller` plugin, the keeper use the `planar move` plugin. After the ball is close enough to the robot (0.15 m), it will catch the ball and then correct its orientation to one of its teammates and pass the ball to them. When the passing is done, the keeper will correct its orientation to the original state and repeat the strafing and catching action. Here are the demonstration,
+The keeper can do some goalkeeping action. When the ball is on the left side of the robot, it will strafe to the left, and when the ball is on the right side of the robot, it will strafe to the right. This is possible because we write a different plugin for our keeper model, not like the rest of the robot which utilize the `differential drive controller` plugin, the keeper use the `planar move` plugin. After the ball is close enough to the robot (0.15 m), it will catch the ball and then correct its orientation to one of its teammates and pass the ball to them. When the passing is done, the keeper will correct its orientation to the original state and repeat the strafing and catching action. Here are the demonstration,
 
 ![](photos/shooting_goalkeeping.gif)
 
