@@ -39,10 +39,31 @@ For our robot ball chaser algorithm, we modified the movement algorithm to make 
 <p>&nbsp;</p>
 
 ## Dribble
-The dribble algorithm for our robot use `/gazebo/set_model_state` service. At first, the robot will follow the ball. Then, once the distance between the ball and the robot is < 0.15m, the ball will stay in front of the robot and will continue dribble. The ball stays in front of the robot (0.09 m apart) using `/gazebo/set_model_state` service by calling it a lot of times until certain circumstances. To calculate the pose the ball is needed to be we used simple trigonometry with robot odometry as its variable. We also used our robot odometry information to make the ball also head to the direction where the robot is heading.
+The dribble algorithm for our robot use `/gazebo/set_model_state` service. At first, the robot will follow the ball. Then, once the distance between the ball and the robot is < 0.15m, the ball will stay in front of the robot and will continue dribble. The ball stays in front of the robot (0.09 m apart) using `/gazebo/set_model_state` service by calling it a lot of times until certain circumstances. To calculate the pose the ball is needed to be we used simple trigonometry with robot odometry as its variable. We also used our robot odometry information to make the ball also head to the direction where the robot is heading. Here are the demonstration,
 
 ![](photos/dribble_1.gif)
 
 <p>&nbsp;</p>
 
 ## Shooting
+Our robot shooting mechanism utilize the `/gazebo/set_model_state` service. After the robot reach the designated position for its shooting, it will correct its orientation to head for the goal. After that, we send twist message to the ball with the ball itself for its _reference_frame_ so it will look like the robot just apply a force to make the ball shoot itself with a certain orientation (the robot orientation). However the service is only called once for the shot. Here are the demonstration,
+
+![](photos/shooting_goalkeeping.gif)
+
+<p>&nbsp;</p>
+
+## Passing and Receiving Pass
+Similar to how we handle shooting, we also use the `/gazebo/set_model_state` service for our passing algorithm. Instead of heading to the goal, the robot will head to the other robot direction. After that, we apply linear velocity to the ball and send it to head to the other robot. Once the ball has reached the other robot, that robot will catch/receive the ball. When the ball released from the first robot, its reference frame is the ball itself, but when the other robot receive the pass, the reference frame for the ball returned to the world. We also make sure so the `/gazebo/set_model_state` service only called once after the robot do the pass, so the ball doesn't try to be in both first and the other robot at the same time (blinking). Here are the demonstration,  
+
+![](photos/passing.gif)
+
+<p>&nbsp;</p>
+
+## GoalKeeping
+The keeper can do some goalkeeping action. When the ball is on the left side of the robot, it will strafe to the left, and whent the ball is on the right side of the robot, it will strafe to the right. This is possible because we write a different plugin for our keeper model, not like the rest of the robot which utilize the `differential drive controller` plugin, the keeper use the `planar move` plugin. After the ball is close enough to the robot (0.15 m), it will catch the ball and then correct its orientation to one of its teammates and pass the ball to them. When the passing is done, the keeper will correct its orientation to the original state and repeat the strafing and catching action. Here are the demonstration,
+
+![](photos/shooting_goalkeeping.gif)
+
+<p>&nbsp;</p>
+
+## Goal/Out Detector
