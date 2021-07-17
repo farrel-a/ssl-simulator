@@ -58,6 +58,20 @@ For our robot model we use the .urdf format to make it easy when we want to use 
 
 <p>&nbsp;</p>
 
+## Flowchart
+
+![](photos/flowchart.jpg)
+
+<p>&nbsp;</p>
+
+The flowchart represents the overall procedural steps while the program is running. The steps explanation same as written below:
+
+1. In the initial state , the starting ball will go to Team 1 and Team 1 will proceed to Kick-Off
+2. The defending team automatically move to defensive position by remote signaling mechanism.
+3. One of robots from the attacking team will proceed to move to the attacking area and positions itself within suitable attacking prowess.
+4. Next, the passing mechanism will occur as the robot which starts with the ball passes to the robot which mentioned on step 3.
+
+
 ## Movement
 Our robot movement is handled by publishing `twist` message to the `/cmd_vel` or `/planar_vel` topics. We used two input which is destination pose/coordinate and the odometry of the robot for the movement algorithm. At first, the robot will correct its orientation to face the destination. Then the robot will go to its destination in a straight line. Here are the demonstration,
 
