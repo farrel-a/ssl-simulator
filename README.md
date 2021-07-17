@@ -10,6 +10,40 @@
 
 <p>&nbsp;</p>
 
+## How to Run the Simulation
+To launch the simulation, do the following steps:
+1. Clone the repository
+```
+$ git clone https://gitlab.com/dagozilla/academy/2021-internship2/group-1/ssl-simulator.git
+```
+
+2. cd to `/ssl-simulator`, then cd to `/ssl_ws`
+```
+$ cd ssl-simulator
+$ cd ssl_ws
+```
+
+3. run `catkin_make`
+```
+$ catkin_make
+```
+
+4. Source `setup.bash`
+```
+$ source devel/setup.bash
+```
+
+5. Launch the world
+```
+$ roslaunch sslbot_gazebo sslbot.launch
+```
+
+6. The result will look like this
+
+![](https://i.ibb.co/Q6p1y4h/Screenshot-from-2021-07-17-16-16-06.png)
+
+<p>&nbsp;</p>
+
 ## Playing Environment
 We create the model for our SSL Robocup playing environment using the already existed model file in Gazebo. The base model that we used are `Robocup 2014 SPL Field` , `Robocup 3D Simulator Goal` , and `RoboCup SPL Ball`. Using those base model we modified its size and looks to suit the [Rules of the RoboCup SSL](https://robocup-ssl.github.io/ssl-rules/sslrules.html) for division A. The model for our playing environment can be found within `ssl_ws/src/sslbot_gazebo/models/` . To spawn our playing environment model, we spawn it using the world files since it doesn't need much handling like the robot. Here are the final looks of our playing environment model,  
 
@@ -48,7 +82,7 @@ The dribble algorithm for our robot use `/gazebo/set_model_state` service. At fi
 ## Shooting
 Our robot shooting mechanism utilize the `/gazebo/set_model_state` service. After the robot reach the designated position for its shooting, it will correct its orientation to head for the goal. After that, we send twist message to the ball with the ball itself for its _reference_frame_ so it will look like the robot just apply a force to make the ball shoot itself with a certain orientation (the robot orientation). However the service is only called once for the shot. Here are the demonstration,
 
-![](photos/shooting_goalkeeping.gif)
+![](photos/shooting.gif)
 
 <p>&nbsp;</p>
 
@@ -67,3 +101,6 @@ The keeper can do some goalkeeping action. When the ball is on the left side of 
 <p>&nbsp;</p>
 
 ## Goal/Out Detector
+We also create node that function as a goal/out detector and world resetter. When the position of the ball is going outside of the playing field, the node will call `/gazebo/reset_world` service and reset the world to its original state. When the ball entered one of the goal. This node will reset the world and set the position of the robot from both team to match the real world kickoff. Team A will begin the kickoff if Team B just scored a goal and Team B will begin the kickoff if Team A just scored a goal. Here are the demonstration,
+
+![](photos/goalout_detector.gif)
