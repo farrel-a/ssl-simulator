@@ -70,6 +70,11 @@ The flowchart represents the overall procedural steps while the program is runni
 2. The defending team automatically move to defensive position by remote signaling mechanism.
 3. One of robots from the attacking team will proceed to move to the attacking area and positions itself within suitable attacking prowess.
 4. Next, the passing mechanism will occur as the robot which starts with the ball passes to the robot which mentioned on step 3.
+5. Lastly , the shooting mechanism will occur by applying the algorithm to detect suitable area to shoot on the goal.
+6. The condition depends on whether the attacking team scores or not.
+    - If the team scores , the game will reset to step 1 (with the ball goes to opposite team).
+    - If the team doesn't score ,  the game will reset to step 2 (with the ball handled by the goalkeeper of the opposite team).
+7. The procedure will never stop if there isn't any form of interruption.
 
 
 ## Movement
