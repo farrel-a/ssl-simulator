@@ -1,35 +1,25 @@
 # SSL Simulator Using Gazebo-ROS
-## Temporary README FILE 
-### (9 July 2021 Update)
 
 <p>&nbsp;</p>
 
-### 16020322 - Nanda Pramudia Santosa
-### 16520034 - Patrick Amadeus Irawan
-### 16520125 - Grace Claudia
-### 16520373 - Farrel Ahmad
+## Developer:
+### 10120004 - Nanda Pramudia Santosa
+### 13520078 - Grace Claudia
+### 13520109 - Patrick Amadeus Irawan
+### 13520110 - Farrel Ahmad
 
 <p>&nbsp;</p>
 
-## Launching World
-~~**Update 12 July 2021 New Branch "testing"**~~
-
-**12 July 2021 Update-1 "master" Branch**
-
-Terminal Run List:
-1. `$ roslaunch sslbot_gazebo sslbot.launch`
-2. `$ rosrun sslbot_gazebo moveto.py`
-
-To launch world and spawn SSL Field and Robots, run this command :
+## How to Run the Simulation
+To launch the simulation, do the following steps:
 1. Clone the repository
 ```
 $ git clone https://gitlab.com/dagozilla/academy/2021-internship2/group-1/ssl-simulator.git
 ```
 
-2. cd to `/ssl-simulator`, change branch to `testing`, then cd to `/ssl_ws`
+2. cd to `/ssl-simulator`, then cd to `/ssl_ws`
 ```
 $ cd ssl-simulator
-$ git checkout testing
 $ cd ssl_ws
 ```
 
@@ -50,184 +40,86 @@ $ roslaunch sslbot_gazebo sslbot.launch
 
 6. The result will look like this
 
-![](https://i.ibb.co/9NCp2HV/Screenshot-from-2021-07-04-15-38-05.png)
-
-7. **(4 July 2021 Update-3)** : Now the SSL ball is spawned at the center of the field 
-
-![](https://i.ibb.co/jgPX5H7/Screenshot-from-2021-07-04-21-18-57.png)
-
-8. **(5 July 2021 Update)** : Now by using the newly created node called `ball_state_pub` which subscribes to a topic `/gazebo/model_states`, the ball's state (position and twist) is published to a topic `ball_state` 
-
-![](https://i.ibb.co/5r1SWfG/Screenshot-from-2021-07-05-23-23-51.png)
-
-rostopic list
+![](https://i.ibb.co/Q6p1y4h/Screenshot-from-2021-07-17-16-16-06.png)
 
 <p>&nbsp;</p>
 
-![](https://i.ibb.co/BrQ9yVh/Screenshot-from-2021-07-05-23-22-20.png)
+## Playing Environment
+We create the model for our SSL Robocup playing environment using the already existed model file in Gazebo. The base model that we used are `Robocup 2014 SPL Field` , `Robocup 3D Simulator Goal` , and `RoboCup SPL Ball`. Using those base model we modified its size and looks to suit the [Rules of the RoboCup SSL](https://robocup-ssl.github.io/ssl-rules/sslrules.html) for division A. The model for our playing environment can be found within `ssl_ws/src/sslbot_gazebo/models/` . To spawn our playing environment model, we spawn it using the world files since it doesn't need much handling like the robot. Here are the final looks of our playing environment model,  
 
-ball_state topic in rostopic echo  
-
-9. **(10 July 2021 Update-1)** : Now the playing field has a barrier so the robot and the ball can't go outside of the playing field. Delete the visual tag of barrier link in ssl_field model to get invisible barrier instead of a colored one.  
-
-![](https://i.ibb.co/pwq540G/Screenshot-from-2021-07-10-00-24-43.png)
-
-
-10. **(10 July 2021 Update-2)** : changed the ball's color to orange to meet the standard of SSL Ball
-
-![](https://i.ibb.co/HpddYNW/Screenshot-from-2021-07-10-06-51-53.png)
-
-
-11. **(14 July 2021 Update-1)** : localized the turtlebot3 urdf file that we used to make it better when development in changing hands and using different computer. We also localized the meshes that the urdf used.
-
-
-12. **(14 July 2021 Update-2)** : updated the launch file to look for the model and asset in its own package
+![](https://i.ibb.co/KDCJMxg/Screenshot-from-2021-07-17-13-05-58.png)  
 
 <p>&nbsp;</p>
 
-## Robot Basic Movement
+## Robot Model and Model Plugin
+For our robot model we use the .urdf format to make it easy when we want to use plugin within it. Our robot .urdf file can be found within `ssl_ws/src/sslbot_gazebo/urdf/` . We separate our model into two categories, one for the keeper and another for the rest of the robot. The plugin we used for our model are `planar move` for the keeper and `differential drive controller` for the rest of the field. The keeper used planar move for its movement because the keeper needs to go sideways and on a fixed track. Our robot publish its odometry to `/odom` topic and subscribe to `/cmd_vel` for its velocity. While the keeper publish its odometry to `/planar_odom` and subscribe to the topic `/planar_vel`. To spawn the robot we used the .launch file and give each robot we spawn its own namespace so we have no need to create separate .urdf file for each robot. Here are the robot model we used for testing of this package,  
 
-1. **(9 July 2021 Update-1, EXPERIMENTAL)** : turtlebot_1 will move to the ball's location . Just run this command after the program starts
-```
-rosrun sslbot_gazebo turtlebot_1_pub
-```
-
-![](https://i.ibb.co/LgtGtJz/Screenshot-from-2021-07-09-18-15-38.png)
-
-First, turtlebot_1 will rotate to the ball's direction
-
-![](https://i.ibb.co/744P08V/Screenshot-from-2021-07-09-18-15-42.png)
-
-Second, turtlebot_1 will move forward to the ball
+![](https://i.ibb.co/4tP4STx/Screenshot-from-2021-07-17-13-38-53.png)
 
 <p>&nbsp;</p>
 
-2. **(9 July 2021 Update-2)** : now using turtlebot3 urdf model to control it using ros control. First, get the turtlebot3 package (we're going to put the urdf in our workspace later on) by using this command
-```
-$ sudo apt-get install ros-noetic-dynamixel-sdk
-$ sudo apt-get install ros-noetic-turtlebot3-msgs
-$ sudo apt-get install ros-noetic-turtlebot3
-```
+## Flowchart
 
-roslaunch the usual launch file
-```
-$ roslaunch sslbot_gazebo sslbot.launch
-```
-
-run this program in another terminal (don't forget to source your setup.bash)
-```
-$ rosrun sslbot_gazebo moveto.py
-```
-
-![](https://i.ibb.co/0MkdMr7/robot-mutar.png)
-at first, the turtlebot will correct its orientation to face the destination
+![](photos/flowchart.jpg)
 
 <p>&nbsp;</p>
 
-![](https://i.ibb.co/s9DxJYv/robot-jalan.png)
-then, the turtlebot will head to its destination. Note that the program need to have angle tolerance in order for the program to work smoothly (the robot have inertia and acceleration).  
+The flowchart represents the overall procedural steps while the program is running. The steps explanation same as written below:
 
-further improvement in tuning/calibration of the robot itself and let the moveto node to subscribe to a topic for its destination argument
+1. In the initial state , the starting ball will go to Team 1 and Team 1 will proceed to Kick-Off
+2. The defending team automatically move to defensive position by remote signaling mechanism.
+3. One of robots from the attacking team will proceed to move to the attacking area and positions itself within suitable attacking prowess.
+4. Next, the passing mechanism will occur as the robot which starts with the ball passes to the robot which mentioned on step 3.
+5. Lastly , the shooting mechanism will occur by applying the algorithm to detect suitable area to shoot on the goal.
+6. The condition depends on whether the attacking team scores or not.
+    - If the team scores , the game will reset to step 1 (with the ball goes to opposite team).
+    - If the team doesn't score ,  the game will reset to step 2 (with the ball handled by the goalkeeper of the opposite team).
+7. The procedure will never stop if there isn't any form of interruption.
 
-this method is good for future update and improvement because the robot itself act as a node and receiving message from command topic like '/cmd_vel' and '/odom' which is useful for navigation (commonly used).  
 
-![](https://i.ibb.co/hV4FDjJ/Screenshot-from-2021-07-09-21-15-36.png)
+## Movement
+Our robot movement is handled by publishing `twist` message to the `/cmd_vel` or `/planar_vel` topics. We used two input which is destination pose/coordinate and the odometry of the robot for the movement algorithm. At first, the robot will correct its orientation to face the destination. Then the robot will go to its destination in a straight line. Here are the demonstration,
+
+![](photos/movement.gif)
 
 <p>&nbsp;</p>
 
-3. **(9 July 2021 Update-3)** : Now the turtlebot3 number 1 will follow the ball wherever it is. Even if we change the ball's position manually
+## Ball Chaser
+For our robot ball chaser algorithm, we modified the movement algorithm to make its destination argument set to the ball pose message that we received from the /ball_state topic (message on this topic published from ball_state_pub node). The result is the robot will go to the ball's pose/coordinate. Here are the demonstration,
 
-![](https://i.ibb.co/0n9djW2/Screenshot-from-2021-07-09-22-37-51.png)
+![](photos/ball_chaser.gif)
 
 <p>&nbsp;</p>
 
-## Catch and Dribble
-**12 July 2021 Update-1**
-
-The dribble and shoot use `/gazebo/set_model_state` service that is called using `moveto` node. 
-
-At first, the robot will follow the ball. Then, once the distance between the ball and the robot is < 0.15m, the ball will stay in front of the robot and will continue dribble. The ball stays in front of the robot (0.11 m apart) using `/gazebo/set_model_state` service by calling it a lot of times until certain circumstances. 
-
-At the enemy goal, the robot will correct its' orientation, then the ball will be shot using `gazebo/set_model_state` by setting linear velocity to the ball. However the service is only called once.
-
-**Watch this turtlebot3 catching and dribbling the ball**
+## Dribble
+The dribble algorithm for our robot use `/gazebo/set_model_state` service. At first, the robot will follow the ball. Then, once the distance between the ball and the robot is < 0.15m, the ball will stay in front of the robot and will continue dribble. The ball stays in front of the robot (0.09 m apart) using `/gazebo/set_model_state` service by calling it a lot of times until certain circumstances. To calculate the pose the ball is needed to be we used simple trigonometry with robot odometry as its variable. We also used our robot odometry information to make the ball also head to the direction where the robot is heading. Here are the demonstration,
 
 ![](photos/dribble_1.gif)
 
 <p>&nbsp;</p>
 
+## Shooting
+Our robot shooting mechanism utilize the `/gazebo/set_model_state` service. After the robot reach the designated position for its shooting, it will correct its orientation to head for the goal. After that, we send twist message to the ball with the ball itself for its _reference_frame_ so it will look like the robot just apply a force to make the ball shoot itself with a certain orientation (the robot orientation). However the service is only called once for the shot. Here are the demonstration,
 
-## Shoot and Goal or Out Detection 
-**12 July 2021 Update-1**
-
-Now the turtlebot can dribble the ball, go to (-2,-2), go to the enemy penalty area, and then kick the ball. Once the ball has been inside the goal. The simulator automatically pause and reset the world. Just play start on bottom left of the screen to start another simulation.
-
-The bug that made turtlebot3 kick the ball twice to the goal in previous `moveto.py` commit has been fixed. The problem was on the goal out detection system in `moveto` node. Now the system has been moved to another specific node called `goalout_node` (cpp). However, in the current update, the goalout detection system only covers the enemy side of goal and out. Another area will be covered later.
-
-The `goalout_node` automatically runs at launch. If the node crashes, it will automatically re-run.
-
-**Watch this goal !**
-
-![](photos/goal.gif)
+![](photos/shooting.gif)
 
 <p>&nbsp;</p>
 
-## Dribbling, Passing, and Shooting
+## Passing and Receiving Pass
+Similar to how we handle shooting, we also use the `/gazebo/set_model_state` service for our passing algorithm. Instead of heading to the goal, the robot will head to the other robot direction. After that, we apply linear velocity to the ball and send it to head to the other robot. Once the ball has reached the other robot, that robot will catch/receive the ball. When the ball released from the first robot, its reference frame is the ball itself, but when the other robot receive the pass, the reference frame for the ball returned to the world. We also make sure so the `/gazebo/set_model_state` service only called once after the robot do the pass, so the ball doesn't try to be in both first and the other robot at the same time (blinking). Here are the demonstration,  
 
-**14 July 2021 Update-1**
-
-Now the robots can dribble, pass, and shoot. Check out the new update in `master` branch. Setup is just the same as before. `catkin_make`, then source `setup.bash` and then run this command:
-```
-$ roslaunch sslbot_gazebo sslbot.launch
-```
-
-Nodes will run automatically at launch. Each robot is controlled by a node called (`robot_x.py`) with x is the number of the robot. For example, the robot that will pass the ball is robot no.1, thus it will be controlled by a node called `robot_1.py`.The other robot which will receive the ball is robot no.3, thus it will be controlled by a node called `robot_3.py`. Each robot has its' own node. 
-
-The algorithm for dribbling was developed by Farrel. It's basically calling service set_model_state to the ball and set it in front of the robot many times. The robot will dribble when the it reaches a distance of < 0.15 m to the ball.
-
-The algorithm for shooting was developed by Farrel and optimized by Nanda. Originally, the shooting algorithm used world reference to set the initial velocity of the ball. Later, Nanda optimized the algorithm by changing the reference to the robot's orientation. Thus, setting the x-axis velocity of the ball to positive numbers will always move forward and follow the robot's orientation. The original shooting algorithm can be seen in earlier commits in `master` and `testing` branch.
-
-The algorithm for passing was developed by Nanda and optimized by Farrel. The algorithm here in `master` branch for passing was adopted, modified, and optimized by Farrel using Nanda's algorithm. Originally, the ball's Quaternion state update used an array of x, y, z, w of the robot with index from 0 to 3. However, the array was dynamic and this was prone to error as it sometimes the list is empty and caused several out of index error. Later, Farrel changed the dynamic array into the global variable of the robot's quaternion state for the ball's quaternion state update. This method is more fail-safe. 
-
-The other optimization by Farrel was adding a little bit of conditional in passing algorithm when the ball is received by robot_3. The added conditional is used to prevent the ball keep appearing in both robot_1 and robot_3. This happened because both robot are calling the service to set the ball in from of them. Hence, the ball was "trying" to appear in both robots. With this added conditional, the robot_1 will not call the service after passing and only robot_3 after receiving the ball will call the service.
-
-Nanda's original passing algorithm can be seen in branch `testing2` where he developed and tested the algorithm.
-
-Other minor optimizations like passing angle and angular velocity was also done by Farrel. The passing angle between the robot which passes the ball and the robot which receives the ball was reduced from < 0.05 radian to < 0.01 radian for greater accuracy. The angular velocity when correcting the orientation to the goal was increased from 0.2 rad/s to 0.4 rad/s for faster movement.
-
-Farrel also added `rosnode kill` command in `goalout_node.cpp` to shutdown all the robot nodes when the it restarts after goal or out. However, since the node is set to automatically run at launch and re-run when it crashes/shut down (`respawn = true`). The node will re-run in initial state condition. This is used to reboot the node back to the initial condition after goal or out to prevent errors.
-
-Note : branch `master` is intended to be the main and most stable program, while `testing` is the branch where Farrel develops the program and algorithm, and `testing2` is the branch where Nanda develops the program and algorithm.
-
-[**Click here to watch the video demonstration**](https://drive.google.com/file/d/1JsxeqhkQt6dOF6NjJHpbZxLlb17ZDDof/view?usp=sharing)
+![](photos/passing.gif)
 
 <p>&nbsp;</p>
 
 ## GoalKeeping
+The keeper can do some goalkeeping action. When the ball is on the left side of the robot, it will strafe to the left, and when the ball is on the right side of the robot, it will strafe to the right. This is possible because we write a different plugin for our keeper model, not like the rest of the robot which utilize the `differential drive controller` plugin, the keeper use the `planar move` plugin. After the ball is close enough to the robot (0.15 m), it will catch the ball and then correct its orientation to one of its teammates and pass the ball to them. When the passing is done, the keeper will correct its orientation to the original state and repeat the strafing and catching action. Here are the demonstration,
 
-**15 July 2021 Update-1**
-
-Now the keeper (robot_2) has its own URDF file, modified so its movement mechanism is no longer using differential drive, but planar move. To do this we created URDF and xacro file exclusive for robot_2. Nanda do this because differential drive plugin cannot work in tandem with planar move plugin. The newly added urdf and xacro file is _turtlebot3_burger_planar.gazebo.xacro_ and _turtlebot3_burger_planar.urdf.xacro_. after that, the robot can accept linear.y velocity and move sideways. The robot subscribe to topic /planar_vel for its velocity.
-
-<p>&nbsp;</p>
-
-## Play Time !
-
-**16 July 2021 Update-1 New Branch "testing4"**
-
-Now the program fully simulates the robots playing soccer. The changing kickoff for each team has not been programmed. For testing reason, move one of the two robots farther that are chasing the ball once the program starts. This is to ensure only one of them gets the ball. After that, it will simulate and the simulation can be watched carefully. This is not the final version because it's not optimized yet. Also the Real Time Factor on Farrel's laptop is about 0.25 to 0.30, so expect the slow simulation.
-
-to start the program. Same as the previous update. Clone the repository, cd to `/ssl-simulator/ssl_ws`, then `catkin_make`, source `setup.bash`, and then run this command (all nodes are run automatically)
-
-```
-$ roslaunch sslbot_gazebo sslbot.launch
-```
-
-![](photos/view1.png)
+![](photos/shooting_goalkeeping.gif)
 
 <p>&nbsp;</p>
 
-## Final Program Prototype 2 (Fully Usable, without Real SSL Model)
-**17 July 2021 Update-1**
+## Goal/Out Detector
+We also create node that function as a goal/out detector and world resetter. When the position of the ball is going outside of the playing field, the node will call `/gazebo/reset_world` service and reset the world to its original state. When the ball entered one of the goal. This node will reset the world and set the position of the robot from both team to match the real world kickoff. Team A will begin the kickoff if Team B just scored a goal and Team B will begin the kickoff if Team A just scored a goal. Here are the demonstration,
 
-Now the program can execute kickoff with different teams. The algorithm is adpoted and modified using Nanda's alogrithm from branch `testing5`. The kickoff team will change everytime there is a goal.
+![](photos/goalout_detector.gif)
