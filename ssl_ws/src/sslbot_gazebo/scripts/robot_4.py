@@ -66,7 +66,6 @@ set_ball_service = rospy.ServiceProxy('/gazebo/set_model_state', SetModelState)
 
 ballstate = SetModelStateRequest() #global ballstate request varible
 goal = Point() #global goal variable
-visited = False
 x_ball = 0.0
 y_ball = 0.0
 dribbling = False #global driblling variable
@@ -77,7 +76,6 @@ def ballPos(msg):
     global goal
     global ballstate
     global dribbling
-    global visited
     global distance
     global passing
     global x_ball
@@ -90,7 +88,7 @@ def ballPos(msg):
         passing = False
         goal.x = -5.2
         goal.y = 1.2
-    else: #bt1 == False
+    elif(not(bt1)): #bt1 == False
         if (dribbling): #dribbling == True
             if (speed.linear.x==0 and speed.angular.z==0 and (abs(angle_to_friend-theta4) < 0.01) and not(passing)):
                 ballstate.model_state.model_name = "ssl_ball_1"

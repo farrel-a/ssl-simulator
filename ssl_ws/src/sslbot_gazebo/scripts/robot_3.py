@@ -92,7 +92,7 @@ def ballPos(msg):
     else: #bt2 == False
         if (dribbling): #dribbling == True
             goal.x = -4.50
-            goal.y = -0.40
+            goal.y = -0.35
 
             if (not(isInEnemyPenalty(x3,y3))):
                 shooting = False
@@ -105,12 +105,12 @@ def ballPos(msg):
                 set_ball_service(ballstate) #call set_model_state to set ball in front of bot
 
             elif (isInEnemyPenalty(x3,y3) and not(shooting)): 
-                if (speed.linear.x==0 and speed.angular.z==0 and (2.80<=abs(theta3)<=2.82)):
+                if (speed.linear.x==0 and speed.angular.z==0 and (2.90<=abs(theta3)<=2.92)):
                     ballstate.model_state.model_name = "ssl_ball_1"
                     ballstate.model_state.pose.position.x = 0.0
                     ballstate.model_state.pose.position.y = 0.0
                     ballstate.model_state.pose.position.z = 0.0
-                    ballstate.model_state.twist.linear.x = 2.0
+                    ballstate.model_state.twist.linear.x = 3.0
                     ballstate.model_state.reference_frame = "ssl_ball_1"
                     set_ball_service(ballstate)  #shoot according to the robot's orientation
                     dribbling = False
@@ -246,10 +246,10 @@ while not rospy.is_shutdown():
                 speed.linear.x = 0.6
         else:
             if (isInEnemyPenalty(x3,y3)):
-                if ((2.80<=abs(theta3)<=2.82) and speed.angular.z != 0):
+                if ((2.90<=abs(theta3)<=2.92) and speed.angular.z != 0):
                     speed.angular.z = 0.0
                     speed.linear.x = 0.0
-                elif ((2.80<=abs(theta3)<=2.82) and speed.angular.z == 0):
+                elif ((2.90<=abs(theta3)<=2.92) and speed.angular.z == 0):
                     speed.angular.z = 0.0
                     speed.linear.x = 0.0
                 elif (y5 > 0):

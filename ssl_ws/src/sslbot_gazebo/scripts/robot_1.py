@@ -87,10 +87,11 @@ def ballPos(msg):
     distance = ((x_ball-x1)**2 + (y_ball-y1)**2)**0.5
     dribbling = isDribbling(distance)
     if (bt2): #bt2 == True
+        dribbling = False
         passing = False
         goal.x = 5.2
         goal.y = -1.2
-    else: #bt2 == False
+    elif(not(bt2)): #bt2 == False
         if (dribbling): #dribbling == True
             if (speed.linear.x==0 and speed.angular.z==0 and (abs(angle_to_friend-theta1) < 0.01) and not(passing)):
                 ballstate.model_state.model_name = "ssl_ball_1"

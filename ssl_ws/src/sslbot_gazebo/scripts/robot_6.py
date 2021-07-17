@@ -71,8 +71,11 @@ direction = 0.0 #global shoot direction (in rad)
 shooting = False #global shooting variable
 x_ball = 0.0
 y_ball = 0.0
+speed = Twist() #global speed variable
 
 def ballPos(msg):
+    global speed
+    global bt1
     global goal
     global shooting
     global ballstate
@@ -109,7 +112,7 @@ def ballPos(msg):
                     ballstate.model_state.pose.position.x = 0.0
                     ballstate.model_state.pose.position.y = 0.0
                     ballstate.model_state.pose.position.z = 0.0
-                    ballstate.model_state.twist.linear.x = 2.0
+                    ballstate.model_state.twist.linear.x = 3.0
                     ballstate.model_state.reference_frame = "ssl_ball_1"
                     set_ball_service(ballstate)  #shoot according to the robot's orientation
                     dribbling = False
@@ -196,8 +199,6 @@ sub5 = rospy.Subscriber("/ball_on_robot_1", Int8, br1Callback)
 sub6 = rospy.Subscriber("/ball_on_robot_4", Int8, br4Callback)
 sub7 = rospy.Subscriber("/ball_on_robot_5", Int8, br5Callback)
 sub8 = rospy.Subscriber("/ball_on_robot_3", Int8, br3Callback)
-
-speed = Twist() #global speed variable
 
 r = rospy.Rate(1000) #1000 Hz
 while not rospy.is_shutdown():
