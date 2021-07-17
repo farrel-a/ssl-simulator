@@ -9,20 +9,20 @@
   <arg name="sixth_tb3"  default="robot_6"/>
 
 
-  <arg name="first_tb3_x_pos" default=" 2.0"/>
-  <arg name="first_tb3_y_pos" default="-2.0"/>
+  <arg name="first_tb3_x_pos" default=" 0.5"/>
+  <arg name="first_tb3_y_pos" default="-0.5"/>
   <arg name="first_tb3_z_pos" default=" 0.0"/>
-  <arg name="first_tb3_yaw"   default=" 3.14"/>
+  <arg name="first_tb3_yaw"   default=" 2.355"/>
 
   <arg name="second_tb3_x_pos" default=" 5.8"/>
   <arg name="second_tb3_y_pos" default=" 0.0"/>
   <arg name="second_tb3_z_pos" default=" 0.0"/>
   <arg name="second_tb3_yaw"   default=" 3.14"/>
 
-  <arg name="third_tb3_x_pos" default=" 2.0"/>
-  <arg name="third_tb3_y_pos" default=" 2.0"/>
+  <arg name="third_tb3_x_pos" default=" 0.5"/>
+  <arg name="third_tb3_y_pos" default=" 0.5"/>
   <arg name="third_tb3_z_pos" default=" 0.0"/>
-  <arg name="third_tb3_yaw"   default=" 3.14"/>
+  <arg name="third_tb3_yaw"   default=" -2.355"/>
 
   <arg name="fourth_tb3_x_pos" default=" -2.0"/>
   <arg name="fourth_tb3_y_pos" default=" 2.0"/>
@@ -130,5 +130,6 @@
   <node name="robot_5.py" pkg="sslbot_gazebo" type="robot_5.py" respawn="true" />
 
   <node name="robot_6.py" pkg="sslbot_gazebo" type="robot_6.py" respawn="true" />
+  
 
 </launch>
