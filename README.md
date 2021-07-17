@@ -224,3 +224,10 @@ $ roslaunch sslbot_gazebo sslbot.launch
 ```
 
 ![](photos/view1.png)
+
+<p>&nbsp;</p>
+
+## Final Program Prototype 2 (Fully Usable, without Real SSL Model)
+**17 July 2021 Update-1**
+
+Now the program can execute kickoff with different teams. The algorithm is adpoted and modified using Nanda's alogrithm from branch `testing5`. The kickoff team will change everytime there is a goal.
