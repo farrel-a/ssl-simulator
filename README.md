@@ -10,9 +10,25 @@
 
 <p>&nbsp;</p>
 
+## Table of Contents
+1. [Overview](https://gitlab.com/dagozilla/academy/2021-internship2/group-1/ssl-simulator#overview)
+2. [How to Run the Simulation](https://gitlab.com/dagozilla/academy/2021-internship2/group-1/ssl-simulator#how-to-run-the-simulation)
+3. [Playing Environment](https://gitlab.com/dagozilla/academy/2021-internship2/group-1/ssl-simulator#playing-environment)
+4. [Robot Model and Model Plugin](https://gitlab.com/dagozilla/academy/2021-internship2/group-1/ssl-simulator#robot-model-and-model-plugin)
+5. [Flowchart](https://gitlab.com/dagozilla/academy/2021-internship2/group-1/ssl-simulator#flowchart)
+6. [Movement](https://gitlab.com/dagozilla/academy/2021-internship2/group-1/ssl-simulator#movement)
+7. [Ball Chaser](https://gitlab.com/dagozilla/academy/2021-internship2/group-1/ssl-simulator#ball-chaser)
+8. [Dribble](https://gitlab.com/dagozilla/academy/2021-internship2/group-1/ssl-simulator#dribble)
+9. [Shooting](https://gitlab.com/dagozilla/academy/2021-internship2/group-1/ssl-simulator#shooting)
+10. [Passing and Receiving Pass](https://gitlab.com/dagozilla/academy/2021-internship2/group-1/ssl-simulator#passing-and-receiving-pass)
+11. [GoalKeeping](https://gitlab.com/dagozilla/academy/2021-internship2/group-1/ssl-simulator#goalkeeping)
+12. [Goal/Out Detector](https://gitlab.com/dagozilla/academy/2021-internship2/group-1/ssl-simulator#goalout-detector)
+
+<p>&nbsp;</p>
+
 ## Overview
 This repository contains workspace where we --group 1-- created our simulation for the Robocup Small Size League (SSL). For our simulation, we utilize Robot Operating System (ROS) and Gazebo for visualization. For more detailed information of our progress on a daily basis, please look at `UPDATELOG.md` in this repository
-
+.
 <p>&nbsp;</p>
 
 ## How to Run the Simulation
