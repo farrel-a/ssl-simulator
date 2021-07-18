@@ -23,6 +23,8 @@
 10. [Passing and Receiving Pass](https://gitlab.com/dagozilla/academy/2021-internship2/group-1/ssl-simulator#passing-and-receiving-pass)
 11. [GoalKeeping](https://gitlab.com/dagozilla/academy/2021-internship2/group-1/ssl-simulator#goalkeeping)
 12. [Goal/Out Detector](https://gitlab.com/dagozilla/academy/2021-internship2/group-1/ssl-simulator#goalout-detector)
+13. [Conclusion](#conc)
+14. [Reference](#ref)
 
 <p>&nbsp;</p>
 
@@ -73,9 +75,13 @@ We create the model for our SSL Robocup playing environment using the already ex
 <p>&nbsp;</p>
 
 ## Robot Model and Model Plugin
-For our robot model we use the .urdf format to make it easy when we want to use plugin within it. Our robot .urdf file can be found within `ssl_ws/src/sslbot_gazebo/urdf/` . We separate our model into two categories, one for the keeper and another for the rest of the robot. The plugin we used for our model are `planar move` for the keeper and `differential drive controller` for the rest of the field. The keeper used planar move for its movement because the keeper needs to go sideways and on a fixed track. Our robot publish its odometry to `/odom` topic and subscribe to `/cmd_vel` for its velocity. While the keeper publish its odometry to `/planar_odom` and subscribe to the topic `/planar_vel`. To spawn the robot we used the .launch file and give each robot we spawn its own namespace so we have no need to create separate .urdf file for each robot. Here are the robot model we used for testing of this package,  
+For our robot model we use the .urdf format to make it easy when we want to use plugin within it. Our robot .urdf file can be found within `ssl_ws/src/sslbot_gazebo/urdf/` . We separate our model into two categories, one for the keeper and another for the rest of the robot. The plugin we used for our model are `planar move` for the keeper and `differential drive controller` for the rest of the field. The keeper used planar move for its movement because the keeper needs to go sideways and on a fixed track. Our robot publish its odometry to `/odom` topic and subscribe to `/cmd_vel` for its velocity. While the keeper publish its odometry to `/planar_odom` and subscribe to the topic `/planar_vel`. To spawn the robot we used the .launch file and give each robot we spawn its own namespace so we have no need to create separate .urdf file for each robot. Here is the SSL robot model we used for this simulator.  
 
 ![](https://i.ibb.co/6n0cdqj/Screenshot-from-2021-07-18-05-35-37.png)
+
+The robot was made by mechanic squad and it was converted from `.iam` file (Inventor Assembly Model) to `.stl` (Standard Triangle Language) and finally into `.urdf` file which uses `.stl` as the mesh.
+
+![](photos/modelformat.png)
 
 <p>&nbsp;</p>
 
@@ -145,3 +151,25 @@ The keeper can do some goalkeeping action. When the ball is on the left side of 
 We also create node that function as a goal/out detector and world resetter. When the position of the ball is going outside of the playing field, the node will call `/gazebo/reset_world` service and reset the world to its original state. When the ball entered one of the goal. This node will reset the world and set the position of the robot from both team to match the real world kickoff. Team A will begin the kickoff if Team B just scored a goal and Team B will begin the kickoff if Team A just scored a goal. Here are the demonstration,
 
 ![](photos/goalout_detector2.gif)
+
+<p>&nbsp;</p>
+
+## Conclusion <a name = "conc"></a>
+
+The simulation program works as expected. It can simulate all the basic soccer robot movements like basic robot movements, chasing the ball, dribbling, passing, shooting, goalkeeping, and kick-off. The simulation is probably not accurate enough to simulate the real world environment. One of the factor is code efficiency is probably not efficient enough. The heavy computation for this program also contributes to the factor. According to our squad's testing. Our computer only handles the simulation with RTF (Real Time Factor) only up to 0.35 will all the nodes running. That makes the simulation looks slow although it is not. Even without any node programs running, with all objects in the simulation (6 robots, fields, ball and goals), the RTF is only up to 0.5 according to our test using our computers. Despite the slow simulation. all the programs and algorithm work exceptionally well to simulate all what the soccer robots needed.
+
+<p>&nbsp;</p>
+
+## Reference <a name = "ref"></a>
+
+- Gazebo. 2014. *Gazebo Tutorials*. http://gazebosim.org/tutorials. Accessed on 10 July 2021.
+
+- ROS.org. 2021. *ROS Tutorials*. http://wiki.ros.org/ROS/Tutorials. Accessed on 10 July 2021.
+
+- ProgrammerSought. *ROS_gazebo set/get model state set_model_state/get_model_state*. https://www.programmersought.com/article/2499660900/. Accessed on 12 July 2021.
+
+- The Construtct. 2017. *[ROS Q&A] 053 - How to Move a Robot to a Certain Point Using Twist*. https://youtu.be/eJ4QPrYqMlw. Accessed on 9 July 2021.
+
+- ROS.org. *ROS Documentation*. https://docs.ros.org/. Accessed on 12 July 2021.
+
+- RoboCup. 2021. *Rules*. https://robocup-ssl.github.io/ssl-rules/sslrules.pdf. Accessed on 1 July 2021.
