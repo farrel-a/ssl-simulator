@@ -233,3 +233,12 @@ $ roslaunch sslbot_gazebo sslbot.launch
 **17 July 2021 Update-1**
 
 Now the program can execute kickoff with different teams. The algorithm is adopted and modified using Nanda's alogrithm from branch `testing5`. The kickoff team will change everytime there is a goal.
+
+<p>&nbsp;</p>
+
+## Final Program (Fully Usable, with Real SSL Model)
+**18 July 2021 Update-1**
+
+Now the simulation already using the model that the that was given from the mechanical division of our Group. Farrel also tune the program to suit the new model more, now the distance between the ball and the robot when dribbling is increased from 0,09m to 0,11m. Now the simulation should look like this,
+
+![](https://i.ibb.co/9hy52RC/Screenshot-from-2021-07-18-05-32-43.png)
