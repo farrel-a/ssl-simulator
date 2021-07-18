@@ -10,6 +10,11 @@
 
 <p>&nbsp;</p>
 
+## Overview
+This repository contains workspace where we --group 1-- created our simulation for the Robocup Small Size League (SSL). For our simulation, we utilize Robot Operating System (ROS) and Gazebo for visualization. For more detailed information of our progress on a daily basis, please look at `UPDATELOG.md` in this repository
+
+<p>&nbsp;</p>
+
 ## How to Run the Simulation
 To launch the simulation, do the following steps:
 1. Clone the repository
@@ -76,6 +81,7 @@ The flowchart represents the overall procedural steps while the program is runni
     - If the team doesn't score ,  the game will reset to step 2 (with the ball handled by the goalkeeper of the opposite team).
 7. The procedure will never stop if there isn't any form of interruption.
 
+<p>&nbsp;</p>
 
 ## Movement
 Our robot movement is handled by publishing `twist` message to the `/cmd_vel` or `/planar_vel` topics. We used two input which is destination pose/coordinate and the odometry of the robot for the movement algorithm. At first, the robot will correct its orientation to face the destination. Then the robot will go to its destination in a straight line. Here are the demonstration,
@@ -92,7 +98,7 @@ For our robot ball chaser algorithm, we modified the movement algorithm to make 
 <p>&nbsp;</p>
 
 ## Dribble
-The dribble algorithm for our robot use `/gazebo/set_model_state` service. At first, the robot will follow the ball. Then, once the distance between the ball and the robot is < 0.15m, the ball will stay in front of the robot and will continue dribble. The ball stays in front of the robot (0.09 m apart) using `/gazebo/set_model_state` service by calling it a lot of times until certain circumstances. To calculate the pose the ball is needed to be we used simple trigonometry with robot odometry as its variable. We also used our robot odometry information to make the ball also head to the direction where the robot is heading. Here are the demonstration,
+The dribble algorithm for our robot use `/gazebo/set_model_state` service. At first, the robot will follow the ball. Then, once the distance between the ball and the robot is < 0.15m, the ball will stay in front of the robot and will continue dribble. The ball stays in front of the robot (0.11 m apart) using `/gazebo/set_model_state` service by calling it a lot of times until certain circumstances. To calculate the pose the ball is needed to be we used simple trigonometry with robot odometry as its variable. We also used our robot odometry information to make the ball also head to the direction where the robot is heading. Here are the demonstration,
 
 ![](photos/dribble2.gif)
 
