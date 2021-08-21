@@ -143,6 +143,7 @@ include_directories(
  add_executable(ball_state_pub src/ball_state_pub.cpp)
  add_executable(turtlebot_1_pub src/turtlebot_1_pub.cpp)
  add_executable(goalout_node src/goalout_node.cpp)
+ add_executable(robot_1 src/robot_1.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -155,6 +156,7 @@ include_directories(
  add_dependencies(ball_state_pub ${ball_state_pub_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
  add_dependencies(turtlebot_1_pub ${turtlebot_1_pub_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
  add_dependencies(goalout_node ${goalout_node_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+ add_dependencies(robot_1 ${robot_1_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
  target_link_libraries(
@@ -167,6 +169,10 @@ include_directories(
  target_link_libraries(
   goalout_node ${catkin_LIBRARIES} ${GAZEBO_LIBRARIES}
  )
+
+ target_link_libraries(
+  robot_1 ${catkin_LIBRARIES} ${GAZEBO_LIBRARIES}
+ )
 #############
 ## Install ##
 #############
@@ -177,7 +183,7 @@ include_directories(
 ## Mark executable scripts (Python etc.) for installation
 ## in contrast to setup.py, you can choose the destination
 catkin_install_python(PROGRAMS
-  scripts/robot_1.py
+  # scripts/robot_1.py
   scripts/robot_2.py
   scripts/robot_3.py
   scripts/robot_4.py
