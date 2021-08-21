@@ -119,7 +119,12 @@
   
   <node name="goalout_node" pkg="sslbot_gazebo" type="goalout_node" respawn="true" />
 
-  <node name="robot_1.py" pkg="sslbot_gazebo" type="robot_1.py" respawn="true" />
+
+<!-- C++ -->
+  <node name="robot_1" pkg="sslbot_gazebo" type="robot_1" respawn="true" />
+
+<!-- PYTHON -->
+  <!-- <node name="robot_1.py" pkg="sslbot_gazebo" type="robot_1.py" respawn="true" /> -->
 
   <node name="robot_2.py" pkg="sslbot_gazebo" type="robot_2.py" respawn="true" />
 
