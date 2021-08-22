@@ -122,11 +122,12 @@
 
 <!-- C++ -->
   <node name="robot_1" pkg="sslbot_gazebo" type="robot_1" respawn="true" />
+  <node name="robot_2" pkg="sslbot_gazebo" type="robot_2" respawn="true" />
 
 <!-- PYTHON -->
   <!-- <node name="robot_1.py" pkg="sslbot_gazebo" type="robot_1.py" respawn="true" /> -->
 
-  <node name="robot_2.py" pkg="sslbot_gazebo" type="robot_2.py" respawn="true" />
+  <!-- <node name="robot_2.py" pkg="sslbot_gazebo" type="robot_2.py" respawn="true" /> -->
 
   <node name="robot_3.py" pkg="sslbot_gazebo" type="robot_3.py" respawn="true" />
 
