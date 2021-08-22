@@ -24,7 +24,8 @@
 11. [GoalKeeping](https://gitlab.com/dagozilla/academy/2021-internship2/group-1/ssl-simulator#goalkeeping)
 12. [Goal/Out Detector](https://gitlab.com/dagozilla/academy/2021-internship2/group-1/ssl-simulator#goalout-detector)
 13. [Conclusion](#conc)
-14. [Reference](#ref)
+14. [Update 1.1](#U1.0)
+15. [Reference](#ref)
 
 <p>&nbsp;</p>
 
@@ -159,6 +160,15 @@ We also create node that function as a goal/out detector and world resetter. Whe
 The simulation program works as expected. It can simulate all the basic soccer robot movements like basic robot movements, chasing the ball, dribbling, passing, shooting, goalkeeping, and kick-off. The simulation is probably not accurate enough to simulate the real world environment. One of the factor is code efficiency is probably not efficient enough. The heavy computation for this program also contributes to the factor. According to our squad's testing. Our computer only handles the simulation with RTF (Real Time Factor) only up to 0.35 will all the nodes running. That makes the simulation looks slow although it is not. Even without any node programs running, with all objects in the simulation (6 robots, fields, ball and goals), the RTF is only up to 0.5 according to our test using our computers. Despite the slow simulation. all the programs and algorithm work exceptionally well to simulate all what the soccer robots needed.
 
 <p>&nbsp;</p>
+
+## Update 1.1 <a name = "U1.0"></a>
+To address the issue of low RTF/slow simulation with python-based node. The robot's node source code has been translated to C++ for improved performance. If the program bugged at start. Start a new terminal and run this command:
+
+```
+$ rosservice call /gazebo/reset_simulation
+```
+
+<br>
 
 ## Reference <a name = "ref"></a>
 
