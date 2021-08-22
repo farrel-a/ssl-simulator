@@ -120,24 +120,21 @@
   <node name="goalout_node" pkg="sslbot_gazebo" type="goalout_node" respawn="true" />
 
 
-<!-- C++ -->
+<!-- C++ NODE AUTORUN-->
   <node name="robot_1" pkg="sslbot_gazebo" type="robot_1" respawn="true" />
   <node name="robot_2" pkg="sslbot_gazebo" type="robot_2" respawn="true" />
   <node name="robot_3" pkg="sslbot_gazebo" type="robot_3" respawn="true" />
   <node name="robot_4" pkg="sslbot_gazebo" type="robot_4" respawn="true" />
+  <node name="robot_5" pkg="sslbot_gazebo" type="robot_5" respawn="true" />
+  <node name="robot_6" pkg="sslbot_gazebo" type="robot_6" respawn="true" />
 
-<!-- PYTHON -->
+<!-- PYTHON NODE AUTORUN -->
   <!-- <node name="robot_1.py" pkg="sslbot_gazebo" type="robot_1.py" respawn="true" /> -->
-
   <!-- <node name="robot_2.py" pkg="sslbot_gazebo" type="robot_2.py" respawn="true" /> -->
-
   <!-- <node name="robot_3.py" pkg="sslbot_gazebo" type="robot_3.py" respawn="true" /> -->
-
   <!-- <node name="robot_4.py" pkg="sslbot_gazebo" type="robot_4.py" respawn="true" /> -->
-
-  <node name="robot_5.py" pkg="sslbot_gazebo" type="robot_5.py" respawn="true" />
-
-  <node name="robot_6.py" pkg="sslbot_gazebo" type="robot_6.py" respawn="true" />
+  <!-- <node name="robot_5.py" pkg="sslbot_gazebo" type="robot_5.py" respawn="true" /> -->
+  <!-- <node name="robot_6.py" pkg="sslbot_gazebo" type="robot_6.py" respawn="true" /> -->
   
 
 </launch>
