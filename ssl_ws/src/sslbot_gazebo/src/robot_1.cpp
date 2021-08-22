@@ -203,9 +203,6 @@ void checkTeam(bool br_1, bool br_2, bool br_3, bool br_4, bool br_5, bool br_6)
     else{bt1=false;bt2=false;}
 }
 
-// Ball Possesion Publisher & Subscriber
-ros::Publisher pub2;
-
 
 int main (int argc, char **argv)
 {
@@ -221,8 +218,8 @@ int main (int argc, char **argv)
     ros::Subscriber sub6 = nh.subscribe("/ball_on_robot_4",100,br4Callback);
     ros::Subscriber sub7 = nh.subscribe("/ball_on_robot_5",100,br5Callback);
     ros::Subscriber sub8 = nh.subscribe("/ball_on_robot_6",100,br6Callback);
-    pub = nh.advertise<geometry_msgs::Twist>("/robot_1/cmd_vel", 10);
-    pub2 = nh.advertise<std_msgs::Int8>("/ball_on_robot_1", 1);
+    ros::Publisher pub = nh.advertise<geometry_msgs::Twist>("/robot_1/cmd_vel", 10);
+    ros::Publisher pub2 = nh.advertise<std_msgs::Int8>("/ball_on_robot_1", 1);
 
     set_ball_service = nh.serviceClient<gazebo_msgs::SetModelState>("/gazebo/set_model_state");
 
@@ -291,7 +288,6 @@ int main (int argc, char **argv)
                 }
             }
         }
-        // ROS_INFO("GX = %f, GY = %f, x = %f, y = %f, t = %f", goal.x, goal.y, x1r, y1r, theta1);
         pub.publish(speed);
         ros::spinOnce();
         loop_rate.sleep();
