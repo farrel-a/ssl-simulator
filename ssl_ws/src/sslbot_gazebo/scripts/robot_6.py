@@ -194,11 +194,11 @@ def checkTeam(br_1, br_2, br_3, br_4, br_5, br_6):
         bt2 = False
 
 pub2 = rospy.Publisher("/ball_on_robot_6", Int8, queue_size=1)
-sub4 = rospy.Subscriber("/ball_on_robot_2", Int8, br2Callback)
-sub5 = rospy.Subscriber("/ball_on_robot_1", Int8, br1Callback)
-sub6 = rospy.Subscriber("/ball_on_robot_4", Int8, br4Callback)
-sub7 = rospy.Subscriber("/ball_on_robot_5", Int8, br5Callback)
-sub8 = rospy.Subscriber("/ball_on_robot_3", Int8, br3Callback)
+sub5 = rospy.Subscriber("/ball_on_robot_2", Int8, br2Callback)
+sub6 = rospy.Subscriber("/ball_on_robot_1", Int8, br1Callback)
+sub7 = rospy.Subscriber("/ball_on_robot_4", Int8, br4Callback)
+sub8 = rospy.Subscriber("/ball_on_robot_5", Int8, br5Callback)
+sub9 = rospy.Subscriber("/ball_on_robot_3", Int8, br3Callback)
 
 r = rospy.Rate(1000) #1000 Hz
 while not rospy.is_shutdown():

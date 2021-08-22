@@ -235,6 +235,7 @@ int main(int argc, char **argv)
                 planar_speed.angular.z = 0.0;
                 planar_speed.linear.x = 0.0;
                 planar_speed.linear.y = 0.0;
+                moving = false;
             }
 
             else if (y2 > 0.01)

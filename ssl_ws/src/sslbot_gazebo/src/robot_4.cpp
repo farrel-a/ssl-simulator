@@ -60,7 +60,7 @@ void newOdom6(const nav_msgs::Odometry& msg)
 
 bool isInEnemyPenalty(double a, double b)
 {
-    if ((-7.0<=a && a<=-4.0) && (-0.5<=b && b<=0.5))
+    if ((4.0<=a && a<=7.0) && (-0.5<=b && b<=0.5))
     {
         return true;
     }
