@@ -145,6 +145,7 @@ include_directories(
  add_executable(goalout_node src/goalout_node.cpp)
  add_executable(robot_1 src/robot_1.cpp)
  add_executable(robot_2 src/robot_2.cpp)
+ add_executable(robot_3 src/robot_3.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -159,6 +160,7 @@ include_directories(
  add_dependencies(goalout_node ${goalout_node_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
  add_dependencies(robot_1 ${robot_1_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
  add_dependencies(robot_2 ${robot_2_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+ add_dependencies(robot_3 ${robot_3_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
  target_link_libraries(
@@ -179,6 +181,10 @@ include_directories(
  target_link_libraries(
   robot_2 ${catkin_LIBRARIES} ${GAZEBO_LIBRARIES}
  )
+
+ target_link_libraries(
+  robot_3 ${catkin_LIBRARIES} ${GAZEBO_LIBRARIES}
+ )
 #############
 ## Install ##
 #############
@@ -191,7 +197,7 @@ include_directories(
 catkin_install_python(PROGRAMS
   # scripts/robot_1.py
   # scripts/robot_2.py
-  scripts/robot_3.py
+  # scripts/robot_3.py
   scripts/robot_4.py
   scripts/robot_5.py
   scripts/robot_6.py
