@@ -152,7 +152,7 @@ int main(int argc, char **argv)
 
     set_ball_service = nh.serviceClient<gazebo_msgs::SetModelState>("/gazebo/set_model_state");
 
-    ros::Rate loop_rate(1000);
+    ros::Rate loop_rate(400); //400 Hz
 
     one.data = 1;
     zero.data = 0;

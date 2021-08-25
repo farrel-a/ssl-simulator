@@ -101,7 +101,8 @@ void check_goal_out(const gazebo_msgs::ModelStates& msg)
         if (!pause_physics && !reset)
         {
             //reboot the node to refresh the node 
-            system("bash -c 'source /opt/ros/noetic/setup.bash; rosnode kill /robot_1.py /robot_2.py /robot_3.py /robot_4.py /robot_5.py /robot_6.py'"); 
+            system("bash -c 'source /opt/ros/noetic/setup.bash; rosnode kill /robot_1 /robot_2 /robot_3 /robot_4 /robot_5 /robot_6'"); 
+            // system("bash -c 'source /opt/ros/noetic/setup.bash; rosnode kill /robot_1.py /robot_2.py /robot_3.py /robot_4.py /robot_5.py /robot_6.py'"); 
             sleep(3);
             // clientPause.call(callPause);
             // sleep(2);    
@@ -110,7 +111,8 @@ void check_goal_out(const gazebo_msgs::ModelStates& msg)
         if (pause_physics && !reset)
         {
             clientReset.call(callReset);
-            system("bash -c 'source /opt/ros/noetic/setup.bash; rosnode kill /robot_1.py /robot_2.py /robot_3.py /robot_4.py /robot_5.py /robot_6.py'"); 
+            system("bash -c 'source /opt/ros/noetic/setup.bash; rosnode kill /robot_1 /robot_2 /robot_3 /robot_4 /robot_5 /robot_6'"); 
+            // system("bash -c 'source /opt/ros/noetic/setup.bash; rosnode kill /robot_1.py /robot_2.py /robot_3.py /robot_4.py /robot_5.py /robot_6.py'"); 
             sleep(3);
             clientSetModel.call(robotstate1);
             clientSetModel.call(robotstate3);
@@ -151,7 +153,7 @@ int main (int argc, char **argv)
     ros::NodeHandle nh;
     ros::Subscriber sub = nh.subscribe("/ball_state",100, check_goal_out);
     clientPause = nh.serviceClient<std_srvs::Empty>("/gazebo/pause_physics");
-    clientReset = nh.serviceClient<std_srvs::Empty>("/gazebo/reset_world");
+    clientReset = nh.serviceClient<std_srvs::Empty>("/gazebo/reset_simulation");
     clientSetModel = nh.serviceClient<gazebo_msgs::SetModelState>("/gazebo/set_model_state");
     ros::spin();
     return 0;

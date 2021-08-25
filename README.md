@@ -24,8 +24,9 @@
 11. [GoalKeeping](https://gitlab.com/dagozilla/academy/2021-internship2/group-1/ssl-simulator#goalkeeping)
 12. [Goal/Out Detector](https://gitlab.com/dagozilla/academy/2021-internship2/group-1/ssl-simulator#goalout-detector)
 13. [Conclusion](#conc)
-14. [Update 1.1](#U1.0)
-15. [Reference](#ref)
+14. [Update 1.1](#U1.1)
+15. [Update 1.2](#U1.2)
+16. [Reference](#ref)
 
 <p>&nbsp;</p>
 
@@ -161,8 +162,17 @@ The simulation program works as expected. It can simulate all the basic soccer r
 
 <p>&nbsp;</p>
 
-## Update 1.1 <a name = "U1.0"></a>
+## Update 1.1 <a name = "U1.1"></a>
 To address the issue of low RTF/slow simulation with python-based node. The robot's node source code has been translated to C++ for improved performance. If the program bugged at start. Start a new terminal and run this command:
+
+```
+$ rosservice call /gazebo/reset_simulation
+```
+
+<br>
+
+## Update 1.2 <a name = "U1.2"></a>
+Improved performance. Some node's queue sizes and node's frequency values have been reduced to certain points for maximum performance. If the program bugged at start run this command:
 
 ```
 $ rosservice call /gazebo/reset_simulation

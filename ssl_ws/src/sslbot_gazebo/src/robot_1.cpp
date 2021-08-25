@@ -213,17 +213,17 @@ int main (int argc, char **argv)
     ros::Subscriber sub = nh.subscribe("/robot_1/odom",100, newOdom1);
     ros::Subscriber sub2 = nh.subscribe("/ball_state",1, ballPos);
     ros::Subscriber sub3 = nh.subscribe("/robot_3/odom",100, newOdom3);
-    ros::Subscriber sub4 = nh.subscribe("/ball_on_robot_2",100,br2Callback);
-    ros::Subscriber sub5 = nh.subscribe("/ball_on_robot_3",100,br3Callback);
-    ros::Subscriber sub6 = nh.subscribe("/ball_on_robot_4",100,br4Callback);
-    ros::Subscriber sub7 = nh.subscribe("/ball_on_robot_5",100,br5Callback);
-    ros::Subscriber sub8 = nh.subscribe("/ball_on_robot_6",100,br6Callback);
+    ros::Subscriber sub4 = nh.subscribe("/ball_on_robot_2",1,br2Callback);
+    ros::Subscriber sub5 = nh.subscribe("/ball_on_robot_3",1,br3Callback);
+    ros::Subscriber sub6 = nh.subscribe("/ball_on_robot_4",1,br4Callback);
+    ros::Subscriber sub7 = nh.subscribe("/ball_on_robot_5",1,br5Callback);
+    ros::Subscriber sub8 = nh.subscribe("/ball_on_robot_6",1,br6Callback);
     ros::Publisher pub = nh.advertise<geometry_msgs::Twist>("/robot_1/cmd_vel", 10);
     ros::Publisher pub2 = nh.advertise<std_msgs::Int8>("/ball_on_robot_1", 1);
 
     set_ball_service = nh.serviceClient<gazebo_msgs::SetModelState>("/gazebo/set_model_state");
 
-    ros::Rate loop_rate(1000); //1000 Hz
+    ros::Rate loop_rate(100); //1000 Hz
 
     one.data = 1;
     zero.data = 0;
